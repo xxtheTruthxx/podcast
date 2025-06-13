@@ -18,10 +18,12 @@ from crud import PodcastCRUD
 router = APIRouter(tags=["Podcast"])
 
 @router.get("/episodes",
-    response_model=List[PodcastEpisodeBase])
+    response_model=List[PodcastEpisodeBase],
+    status_code=status.HTTP_200_OK)
 async def get_all_episodes(
     session: AsyncSessionDep
 ):
+    """Get all podcast episodes."""
     result = await PodcastCRUD(session).read_all(
         db_obj=PodcastEpisode
     )
@@ -39,6 +41,7 @@ async def create_episode(
     episode: Annotated[PodcastEpisodeBase, Body],
     session: AsyncSessionDep
 ):
+    """Create a podcast episode."""
     db_obj = PodcastEpisodeCreate.model_validate(episode)
     result = await PodcastCRUD(session).create(
         create_obj=PodcastEpisode(**db_obj.model_dump()),

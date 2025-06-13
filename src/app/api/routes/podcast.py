@@ -1,16 +1,20 @@
+from typing import List, Annotated
 from fastapi import (
     APIRouter,
     HTTPException,
     status,
+    Path,
     Body
 )
 from core.models.podcast import (
-    PodcastEpisodeBase,
     PodcastEpisode,
-    PodcastEpisodeCreate
+    PodcastEpisodeBase,
+    PodcastEpisodeCreate,
+    PodcastEpisodeGenerate,
+    PodcastEpisodeAlternative
 )
 
-from typing import List, Annotated
+from core.services.groq import GroqClient
 
 from api.dependencies import AsyncSessionDep
 from crud import PodcastCRUD
@@ -47,4 +51,36 @@ async def create_episode(
         create_obj=PodcastEpisode(**db_obj.model_dump()),
         return_obj=PodcastEpisodeBase
     )
+    return result
+
+@router.post("/episodes/{episode_id}/generate_alternative",
+    response_model=PodcastEpisodeAlternative,
+    status_code=status.HTTP_200_OK)
+async def get_alternative_episode(
+    episode_id: Annotated[int, Path],
+    message: Annotated[PodcastEpisodeGenerate, Body],
+    session: AsyncSessionDep
+):
+    """Get alternative episode."""
+    result = await PodcastCRUD(session).get_by_id(id=episode_id)
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Episode not found."
+        )
+    episode = PodcastEpisodeBase(**result.model_dump())
+    
+    response = await GroqClient("llama3-70b-8192").chat(
+        message=[
+            {
+                "role": "user",
+                "context": episode.description 
+            }
+        ]
+    )
+
+    # disc = GroqClient.chat(result.description).choices[0].message.content
+    # print(disc)
+    result = PodcastEpisodeAlternative(
+        title=message.title, prompt=message.prompt, original_episode=episode, generated_alternative=response)
     return result

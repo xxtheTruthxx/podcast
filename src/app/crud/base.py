@@ -1,25 +1,32 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import select
 
-from typing import List
+from typing import Any, List
 
-from core.models.base import TypeSQL
+from core.config import TypeSQL
 
 class BaseCRUD:
     def __init__(self, session: AsyncSession):
         self.session = session
 
     async def create(
-            self,
-            create_obj: TypeSQL,
-            return_obj: TypeSQL
-        ) -> TypeSQL:
+        self,
+        create_obj: TypeSQL,
+        return_obj: TypeSQL
+    ) -> TypeSQL:
         self.session.add(create_obj)
         await self.session.commit()
         await self.session.refresh(create_obj)
         result = return_obj(**create_obj.model_dump())
         return result
-    
+
+    async def read_by(
+            self,
+            db_obj: TypeSQL,
+            target: Any
+    ) -> TypeSQL:
+        statement = select(db_obj).where(target)
+
     async def read_all(
             self,
             db_obj: TypeSQL

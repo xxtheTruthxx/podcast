@@ -1,4 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlmodel import SQLModel
+from typing import TypeVar
+
+TypeSQL = TypeVar("SQLType", bound=SQLModel)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -16,5 +20,7 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PORT: int
     DB_NAME: str
+
+    GROQ_API_KEY: str
 
 settings = Settings()

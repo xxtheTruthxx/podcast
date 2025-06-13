@@ -1,4 +1,5 @@
 from sqlmodel import SQLModel, Field
+from pydantic import BaseModel
 
 class PodcastEpisodeBase(SQLModel):
     title: str
@@ -11,3 +12,11 @@ class PodcastEpisode(PodcastEpisodeBase, table=True):
 
 class PodcastEpisodeCreate(PodcastEpisodeBase):
     pass
+
+class PodcastEpisodeGenerate(BaseModel):
+    title: str
+    prompt: str
+
+class PodcastEpisodeAlternative(PodcastEpisodeGenerate):
+    original_episode: PodcastEpisodeBase
+    generated_alternative: str

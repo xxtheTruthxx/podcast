@@ -1,5 +1,6 @@
 from fastapi import (
     APIRouter,
+    HTTPException,
     status,
     Body
 )
@@ -16,18 +17,20 @@ from crud import PodcastCRUD
 
 router = APIRouter(tags=["Podcast"])
 
-# @router.get("/episodes",
-#     response_model=List[PodcastEpisode])
-# async def get_all_episodes(
-#     session: AsyncSessionDep
-# ):
-    # result = await PodcastCRUD(session).create()
-    # if not result:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_404_NOT_FOUND,
-    #         detail="Episodes not found."
-    #     )
-    # return result
+@router.get("/episodes",
+    response_model=List[PodcastEpisodeBase])
+async def get_all_episodes(
+    session: AsyncSessionDep
+):
+    result = await PodcastCRUD(session).read_all(
+        db_obj=PodcastEpisode
+    )
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Episodes not found."
+        )
+    return result
 
 @router.post("/episodes",
     response_model=PodcastEpisodeBase,
@@ -38,6 +41,7 @@ async def create_episode(
 ):
     db_obj = PodcastEpisodeCreate.model_validate(episode)
     result = await PodcastCRUD(session).create(
-        PodcastEpisode(**db_obj.model_dump()), PodcastEpisode
+        create_obj=PodcastEpisode(**db_obj.model_dump()),
+        return_obj=PodcastEpisodeBase
     )
     return result

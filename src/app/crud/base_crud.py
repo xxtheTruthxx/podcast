@@ -22,8 +22,8 @@ class BaseCRUD:
     
     async def read_all(
             self,
-            obj: TypeSQL
+            db_obj: TypeSQL
         ) -> List[TypeSQL]:
-        statement = select(obj)
-        result = self.session.exec(statement)
-        return result.all()
+        statement = select(db_obj)
+        result = await self.session.execute(statement)
+        return result.scalars().all()

@@ -32,10 +32,6 @@ Combined with `Groq API` to achieve fast inference speed and maintain simplicity
 ### - How to check environment configuration (variables)?
 In the `.env.example` file.
 
-# **Snippets**
-
-
-
 # **Installation**
 
 Follow this guide step-by-step.
@@ -72,7 +68,15 @@ poetry install --no-root
 docker compose up
 ```
 
+# **Code Snippets**
 
+```
+
+.
+
+
+
+```
 
 
 

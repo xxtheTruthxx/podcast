@@ -16,7 +16,7 @@ from core.models.podcast import (
 )
 
 # Local Dependencies
-from core.services.groq import GroqClient
+from core.services import GroqClient
 from api.dependencies import AsyncSessionDep
 from crud import PodcastCRUD
 

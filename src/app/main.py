@@ -1,11 +1,12 @@
-from starlette.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+
+# Third-party Dependencies
+from starlette.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
+# Local Dependencies
 from core.config import settings
-
 from api.api import api_router
-
 from core.db.database import init_db
 
 @asynccontextmanager
@@ -13,6 +14,7 @@ async def lifespan(app: FastAPI):
     await init_db()
     yield
 
+# Initilize an application
 app = FastAPI(
     title=settings.NAME,
     description=settings.DESCRIPTION,

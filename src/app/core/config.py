@@ -1,8 +1,10 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel
 from sqlmodel import SQLModel
 from typing import TypeVar
 
-TypeSQL = TypeVar("SQLType", bound=SQLModel)
+TypeSQL = TypeVar("TypeSQL", bound=SQLModel)
+TypeModel = TypeVar("TypeModel", bound=BaseModel)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -14,6 +16,7 @@ class Settings(BaseSettings):
     NAME: str
     DESCRIPTION: str
     VERSION: str
+    API_V1_STR: str = "/api/v1"
 
     DB_USERNAME: str
     DB_PASSWORD: str

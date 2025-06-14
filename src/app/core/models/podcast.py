@@ -1,6 +1,8 @@
 from sqlmodel import SQLModel, Field
 from pydantic import BaseModel
 
+from typing import Literal
+
 class PodcastEpisodeBase(SQLModel):
     title: str
     description: str
@@ -11,7 +13,7 @@ class PodcastEpisode(PodcastEpisodeBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
 class PodcastEpisodeGenerate(BaseModel):
-    title: str
+    target: Literal["title", "description"]
     prompt: str
 
 class PodcastEpisodeAlternative(PodcastEpisodeGenerate):

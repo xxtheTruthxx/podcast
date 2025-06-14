@@ -27,15 +27,15 @@ async def get_all_episodes(
     session: AsyncSessionDep
 ):
     """Get all podcast episodes."""
-    result = await PodcastCRUD(session).read_all(
+    episodes = await PodcastCRUD(session).read_all(
         db_obj=PodcastEpisode
     )
-    if not result:
+    if not episodes:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Episodes not found."
         )
-    return result
+    return episodes
 
 @router.post("/episodes",
     response_model=PodcastEpisodeBase,
@@ -46,11 +46,11 @@ async def create_episode(
 ):
     """Create a podcast episode."""
     db_obj = PodcastEpisode.model_validate(episode)
-    result = await PodcastCRUD(session).create(
+    episode = await PodcastCRUD(session).create(
         create_obj=db_obj,
         return_obj=PodcastEpisodeBase
     )
-    return result
+    return episode
 
 @router.post("/episodes/{episode_id}/generate_alternative",
     response_model=PodcastEpisodeAlternative,
@@ -67,19 +67,20 @@ async def get_alternative_episode(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Episode not found."
         )
-    episode = PodcastEpisodeBase(**result.model_dump())
-    
-    response = await GroqClient("llama3-70b-8192").chat(
-        message=[
-            {
-                "role": "user",
-                "context": episode.description 
-            }
-        ]
-    )
+    origional_episode = PodcastEpisodeBase.model_validate(result)
 
-    # disc = GroqClient.chat(result.description).choices[0].message.content
-    # print(disc)
-    result = PodcastEpisodeAlternative(
-        title=message.title, prompt=message.prompt, original_episode=episode, generated_alternative=response)
-    return result
+    groq = GroqClient(
+        model="llama-3.1-8b-instant",
+        temperature=0.0
+    ).create_template(
+        prompt=message.prompt
+    )
+    target = getattr(origional_episode, message.target)
+    generated_alternative = await groq.ask(target)
+    
+    return PodcastEpisodeAlternative(
+        target=message.target,
+        prompt=message.prompt,
+        original_episode=origional_episode,
+        generated_alternative=generated_alternative
+    )

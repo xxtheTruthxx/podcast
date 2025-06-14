@@ -4,8 +4,6 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app/
 
-# ENV PATH="/app/.venv/bin:$PATH"
-
 RUN pip install --no-cache-dir poetry
 
 COPY pyproject.toml /app/

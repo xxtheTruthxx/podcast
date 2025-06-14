@@ -14,9 +14,8 @@ services:
 
   postgres:
     image: postgres:latest
-    shm_size: 128mb
     ports:
-      - 5432:5432 
+      - "5432:5432" 
     restart: always
     environment:
       POSTGRES_DB: postgres
@@ -27,3 +26,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  tests:
+    build: .
+    command: pytest /app/tests
+    environment:
+        PYTHONPATH: /app/src/
+        POSTGRES_DB: testdb
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: Y2JhYjE1OThlNjdlYmIyZTE2
+    depends_on:
+      - postgres

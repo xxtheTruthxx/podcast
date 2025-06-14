@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
 
+
     GROQ_API_KEY: str
 
 settings = Settings()
+
+DB_URL = f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"

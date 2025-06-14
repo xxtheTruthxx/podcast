@@ -1,23 +1,23 @@
 # Third-party Dependencies
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    AsyncSession
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine
 )
 from sqlmodel import SQLModel
 
 # Local Dependencies
-from core.config import settings
+from core.config import DB_URL
 
-# Create an async engine istance
-DB_URL=f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
-async_engine = create_async_engine(DB_URL, echo=True)
+# Create an async engine instance
+async_engine = create_async_engine(DB_URL, echo=True, pool_pre_ping=True)
 
 # Create a reusable Session class for consistent database interactions 
-async_session = sessionmaker(
+async_session = async_sessionmaker(
     async_engine,
     class_=AsyncSession,
-    expire_on_commit=False
+    expire_on_commit=False,
+    autoflush=False
 )
 
 async def init_db():

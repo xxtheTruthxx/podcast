@@ -20,5 +20,4 @@ async def init_db():
     Create the database tables.
     """
     async with async_engine.begin() as conn:
-        await conn.run_sync(
-            SQLModel.metadata.create_all)
+        await conn.run_sync(SQLModel.metadata.create_all)

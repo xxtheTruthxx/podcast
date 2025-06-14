@@ -1,11 +1,11 @@
 from typing import List, Annotated
 from fastapi import (
     APIRouter,
-    HTTPException,
     status,
     Path,
     Body
 )
+from fastapi.responses import JSONResponse
 from core.models.podcast import (
     PodcastEpisode,
     PodcastEpisodeBase,
@@ -31,9 +31,9 @@ async def get_all_episodes(
         db_obj=PodcastEpisode
     )
     if not episodes:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "Episodes not found."}
+            content={"error": "Episodes not found."}
         )
     return episodes
 
@@ -63,9 +63,9 @@ async def get_alternative_episode(
     """Get alternative episode."""
     result = await PodcastCRUD(session).get_by_id(id=episode_id)
     if not result:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"error": "Episode not found."}
+            content={"error": "Episode not found."}
         )
     origional_episode = PodcastEpisodeBase.model_validate(result)
 

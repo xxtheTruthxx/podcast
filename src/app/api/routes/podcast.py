@@ -33,7 +33,7 @@ async def get_all_episodes(
     if not episodes:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Episodes not found."
+            detail={"error": "Episodes not found."}
         )
     return episodes
 
@@ -46,10 +46,10 @@ async def create_episode(
 ):
     """Create a podcast episode."""
     db_obj = PodcastEpisode.model_validate(episode)
-    episode = await PodcastCRUD(session).create(
-        create_obj=db_obj,
-        return_obj=PodcastEpisodeBase
+    result = await PodcastCRUD(session).create(
+        obj=db_obj
     )
+    episode = PodcastEpisodeBase.model_validate(result)
     return episode
 
 @router.post("/episodes/{episode_id}/generate_alternative",
@@ -65,13 +65,12 @@ async def get_alternative_episode(
     if not result:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Episode not found."
+            detail={"error": "Episode not found."}
         )
     origional_episode = PodcastEpisodeBase.model_validate(result)
 
     groq = GroqClient(
         model="llama-3.1-8b-instant",
-        temperature=0.0
     ).create_template(
         prompt=message.prompt
     )

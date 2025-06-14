@@ -1,7 +1,7 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import select
 
-from typing import Any, List
+from typing import Optional, List
 
 from core.config import TypeSQL
 
@@ -11,14 +11,12 @@ class BaseCRUD:
 
     async def create(
         self,
-        create_obj: TypeSQL,
-        return_obj: TypeSQL
+        obj: TypeSQL,
     ) -> TypeSQL:
-        self.session.add(create_obj)
+        self.session.add(obj)
         await self.session.commit()
-        await self.session.refresh(create_obj)
-        result = return_obj.model_validate(create_obj)
-        return result
+        await self.session.refresh(obj)
+        return obj
 
     async def read_all(
             self,

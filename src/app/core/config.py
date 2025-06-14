@@ -4,7 +4,6 @@ from sqlmodel import SQLModel
 from typing import TypeVar
 
 TypeSQL = TypeVar("TypeSQL", bound=SQLModel)
-TypeModel = TypeVar("TypeModel", bound=BaseModel)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(

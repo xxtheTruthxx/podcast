@@ -9,7 +9,6 @@ from fastapi import (
 from core.models.podcast import (
     PodcastEpisode,
     PodcastEpisodeBase,
-    PodcastEpisodeCreate,
     PodcastEpisodeGenerate,
     PodcastEpisodeAlternative
 )
@@ -46,9 +45,9 @@ async def create_episode(
     session: AsyncSessionDep
 ):
     """Create a podcast episode."""
-    db_obj = PodcastEpisodeCreate.model_validate(episode)
+    db_obj = PodcastEpisode.model_validate(episode)
     result = await PodcastCRUD(session).create(
-        create_obj=PodcastEpisode(**db_obj.model_dump()),
+        create_obj=db_obj,
         return_obj=PodcastEpisodeBase
     )
     return result

@@ -10,9 +10,6 @@ class PodcastEpisode(PodcastEpisodeBase, table=True):
     __tablename__ = "podcasts"
     id: int | None = Field(default=None, primary_key=True)
 
-class PodcastEpisodeCreate(PodcastEpisodeBase):
-    pass
-
 class PodcastEpisodeGenerate(BaseModel):
     title: str
     prompt: str

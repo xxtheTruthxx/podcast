@@ -17,15 +17,8 @@ class BaseCRUD:
         self.session.add(create_obj)
         await self.session.commit()
         await self.session.refresh(create_obj)
-        result = return_obj(**create_obj.model_dump())
+        result = return_obj.model_validate(create_obj)
         return result
-
-    async def read_by(
-            self,
-            db_obj: TypeSQL,
-            target: Any
-    ) -> TypeSQL:
-        statement = select(db_obj).where(target)
 
     async def read_all(
             self,

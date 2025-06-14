@@ -1,8 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import BaseModel
 from sqlmodel import SQLModel
 from typing import TypeVar
 
+# Define a generic type variable
 TypeSQL = TypeVar("TypeSQL", bound=SQLModel)
 
 class Settings(BaseSettings):

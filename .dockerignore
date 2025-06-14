@@ -7,5 +7,6 @@ app.egg-info
 .git
 venv/
 tests/
+scripts/
 .gitignore
 poetry.lock

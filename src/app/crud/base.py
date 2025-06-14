@@ -1,8 +1,10 @@
+from typing import List
+
+# Third-party Dependencies
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import select
 
-from typing import Optional, List
-
+# Local Dependencies
 from core.config import TypeSQL
 
 class BaseCRUD:
@@ -11,7 +13,7 @@ class BaseCRUD:
 
     async def create(
         self,
-        obj: TypeSQL,
+        obj: type[TypeSQL],
     ) -> TypeSQL:
         self.session.add(obj)
         await self.session.commit()
@@ -20,8 +22,8 @@ class BaseCRUD:
 
     async def read_all(
             self,
-            db_obj: TypeSQL
-        ) -> List[TypeSQL]:
+            db_obj: type[TypeSQL]
+        ) -> List[type[TypeSQL]]:
         statement = select(db_obj)
         result = await self.session.execute(statement)
         return result.scalars().all()

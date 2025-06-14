@@ -1,4 +1,6 @@
 from typing import List, Annotated
+
+# Third-party Dependencies
 from fastapi import (
     APIRouter,
     status,
@@ -13,8 +15,8 @@ from core.models.podcast import (
     PodcastEpisodeAlternative
 )
 
+# Local Dependencies
 from core.services.groq import GroqClient
-
 from api.dependencies import AsyncSessionDep
 from crud import PodcastCRUD
 
@@ -26,7 +28,7 @@ router = APIRouter(tags=["Podcast"])
 async def get_all_episodes(
     session: AsyncSessionDep
 ):
-    """Get all podcast episodes."""
+    """Get all episodes."""
     episodes = await PodcastCRUD(session).read_all(
         db_obj=PodcastEpisode
     )
@@ -44,7 +46,7 @@ async def create_episode(
     episode: Annotated[PodcastEpisodeBase, Body],
     session: AsyncSessionDep
 ):
-    """Create a podcast episode."""
+    """Create an episode."""
     db_obj = PodcastEpisode.model_validate(episode)
     result = await PodcastCRUD(session).create(
         obj=db_obj

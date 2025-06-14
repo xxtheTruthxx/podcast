@@ -1,7 +1,8 @@
+from typing import Literal
+
+# Third-party Dependencies
 from sqlmodel import SQLModel, Field
 from pydantic import BaseModel
-
-from typing import Literal
 
 class PodcastEpisodeBase(SQLModel):
     title: str

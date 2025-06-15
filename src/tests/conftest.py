@@ -14,48 +14,50 @@ from sqlmodel import SQLModel
 
 # Local Dependencies    
 from app.api.dependencies import get_async_session
-from app.core.config import settings, DB_URL
+from app.core.config import DB_URL
 from app.main import app
 
-# Create a test async engine instance
-test_async_engine = create_async_engine(
-    url=f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/postgres",
-    echo=False,
-    poolclass=NullPool
-)
+TEST_DB = "postgresql+asyncpg://dephhjkssyjfzyblmcan:NzlkNDdkNzk4YTNiNzc0@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 
-# Drop all tables after each test
-@pytest_asyncio.fixture(scope="function")
-async def async_db_engine():
-    async with test_async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-    yield test_async_engine
-    async with test_async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
+# # Create a test async engine instance
+# test_async_engine = create_async_engine(
+#     TEST_DB,
+#     # DB_URL,
+#     echo=False,
+#     poolclass=NullPool
+# )
 
-@pytest_asyncio.fixture(scope="function")
-async def async_session(async_db_engine):
-    test_async_session = async_sessionmaker(
-        bind=async_db_engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-        autocommit=False,
-        autoflush=False
-    )
+# # Drop all tables after each test
+# @pytest_asyncio.fixture(scope="function")
+# async def test_async_db_engine():
+#     async with test_async_engine.begin() as conn:
+#         await conn.run_sync(SQLModel.metadata.create_all)
+#     yield test_async_engine
+#     async with test_async_engine.begin() as conn:
+#         await conn.run_sync(SQLModel.metadata.drop_all)
 
-    async with test_async_session() as session:
-        await session.begin()
-        yield session
-        await session.rollback()
+# @pytest_asyncio.fixture(scope="function")
+# async def test_async_session(test_async_db_engine):
+#     test_async_session = async_sessionmaker(
+#         test_async_db_engine,
+#         class_=AsyncSession,
+#         expire_on_commit=False,
+#         autocommit=False,
+#         autoflush=False
+#     )
+
+#     async with test_async_session() as session:
+#         async with session.begin():
+#             yield session
 
 @pytest_asyncio.fixture(scope="function", autouse=True)
-async def async_client(async_session) -> AsyncGenerator[AsyncClient, None]:
-    def override_async_session():
-        yield async_session
+async def test_async_client() -> AsyncGenerator[AsyncClient, None]:
+    # async def override_async_session() -> AsyncGenerator[AsyncSession, None]:
+        # yield test_async_session
 
-    app.dependency_overrides[get_async_session] = override_async_session
+    # app.dependency_overrides[get_async_session] = override_async_session
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test"
     ) as async_client:
         yield async_client
-    app.dependency_overrides.clear()
+# /    app.dependency_overrides.clear()

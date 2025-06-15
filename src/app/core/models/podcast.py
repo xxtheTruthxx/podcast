@@ -9,7 +9,7 @@ class PodcastEpisodeBase(SQLModel):
     description: str
     host: str
 
-class PodcastEpisode(PodcastEpisodeBase, table=True):
+class PodcastEpisode(PodcastEpisodeBase, table=True, extend_existing=True):
     __tablename__ = "podcasts"
     id: int | None = Field(default=None, primary_key=True)
 

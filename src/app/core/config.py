@@ -29,3 +29,4 @@ class Settings(BaseSettings):
 settings = Settings()
 
 DB_URL = f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+# DB_URL = f"postgresql+asyncpg://postgres:{settings.DB_PASSWORD}@db.tphowueneapwdwzpntsz.supabase.co:5432/postgres"

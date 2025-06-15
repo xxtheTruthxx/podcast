@@ -8,14 +8,14 @@ from fastapi import (
     Body
 )
 from fastapi.responses import JSONResponse
+
+# Local Dependencies
 from core.models.podcast import (
     PodcastEpisode,
     PodcastEpisodeBase,
     PodcastEpisodeGenerate,
     PodcastEpisodeAlternative
 )
-
-# Local Dependencies
 from core.services import GroqClient
 from api.dependencies import AsyncSessionDep
 from crud import PodcastCRUD
@@ -43,14 +43,12 @@ async def get_all_episodes(
     response_model=PodcastEpisodeBase,
     status_code=status.HTTP_201_CREATED)
 async def create_episode(
-    episode: Annotated[PodcastEpisodeBase, Body],
+    episode: Annotated[PodcastEpisodeBase, Body()],
     session: AsyncSessionDep
 ):
     """Create an episode."""
     db_obj = PodcastEpisode.model_validate(episode)
-    result = await PodcastCRUD(session).create(
-        obj=db_obj
-    )
+    result = await PodcastCRUD(session).create(db_obj)
     episode = PodcastEpisodeBase.model_validate(result)
     return episode
 
@@ -59,7 +57,7 @@ async def create_episode(
     status_code=status.HTTP_200_OK)
 async def get_alternative_episode(
     episode_id: Annotated[int, Path],
-    message: Annotated[PodcastEpisodeGenerate, Body],
+    message: Annotated[PodcastEpisodeGenerate, Body()],
     session: AsyncSessionDep
 ):
     """Get alternative episode."""

@@ -29,6 +29,9 @@ Because, It offers a free tier with good speed and perfomance, making it good ch
 For the `GroqClient`, I use LangChain framework. [LangChain](https://www.langchain.com/) is a framework that makes it easy to build application with LLMs. </br>
 Combined with `Groq API` to achieve fast inference speed and maintain simplicity.
 
+
+https://npr.github.io/content-distribution-service/faq/table-of-aggregations.html
+
 ### - How to check environment configuration (variables)?
 In the `.env.example` file.
 

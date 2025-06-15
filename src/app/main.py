@@ -10,6 +10,8 @@ from core.config import settings
 from api.api import api_router
 from core.db.database import async_engine
 
+# delete this
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Create the database tables

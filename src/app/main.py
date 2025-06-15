@@ -2,17 +2,21 @@ from contextlib import asynccontextmanager
 
 # Third-party Dependencies
 from starlette.middleware.cors import CORSMiddleware
+from sqlmodel import SQLModel
 from fastapi import FastAPI
 
 # Local Dependencies
 from core.config import settings
 from api.api import api_router
-from core.db.database import init_db
+from core.db.database import async_engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
-    yield
+    # Create the database tables.
+    async with async_engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+        yield
+    await async_engine.dispose()
 
 # Initilize an application
 app = FastAPI(

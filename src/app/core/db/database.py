@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine
 )
-from sqlmodel import SQLModel
 
 # Local Dependencies
 from core.config import DB_URL
@@ -20,9 +19,9 @@ async_session = async_sessionmaker(
     autoflush=False
 )
 
-async def init_db():
-    """
-    Create the database tables.
-    """
-    async with async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
+# async def init_db():
+    # """
+    # Create the database tables.
+    # """
+    # async with async_engine.begin() as conn:
+        # await conn.run_sync(SQLModel.metadata.create_all)

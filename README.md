@@ -24,7 +24,7 @@ Benefits:
 Honestly, I had never used SQL databases before, so I challenged myself to learn by using PostgreSQL for this project. </br>
 I set up PostgreSQL in a Docker container, because it simplifies, isolation and portability across environments. 
 
-### - Why I use Groq for Level 2?
+### - Why I use Groq for the Level 2?
 Because, It offers a free tier with good speed and perfomance, making it good choice for development or even producation. </br>
 For the `GroqClient`, I use LangChain framework. [LangChain](https://www.langchain.com/) is a framework that makes it easy to build application with LLMs. </br>
 Combined with `Groq API` to achieve fast inference speed and maintain simplicity.

@@ -40,7 +40,7 @@ async def async_session(async_db_engine):
         class_=AsyncSession,
         expire_on_commit=False,
         autocommit=False,
-        autoflush=False,
+        autoflush=False
     )
 
     async with test_async_session() as session:

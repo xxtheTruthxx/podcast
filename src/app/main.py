@@ -12,10 +12,10 @@ from core.db.database import async_engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create the database tables.
+    # Create the database tables
     async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
-        yield
+    yield
     await async_engine.dispose()
 
 # Initilize an application

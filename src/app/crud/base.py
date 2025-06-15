@@ -22,7 +22,7 @@ class BaseCRUD:
 
     async def read_all(
             self,
-            db_obj: type[TypeSQL]
+            db_obj: type[TypeSQL],
         ) -> List[type[TypeSQL]]:
         statement = select(db_obj)
         result = await self.session.execute(statement)

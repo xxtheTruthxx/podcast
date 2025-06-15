@@ -9,9 +9,12 @@ class PodcastEpisodeBase(SQLModel):
     description: str
     host: str
 
-class PodcastEpisode(PodcastEpisodeBase, table=True, extend_existing=True):
+class PodcastEpisode(SQLModel, table=True):
     __tablename__ = "podcasts"
     id: int | None = Field(default=None, primary_key=True)
+    title: str
+    description: str
+    host: str
 
 class PodcastEpisodeGenerate(BaseModel):
     target: Literal["title", "description"]

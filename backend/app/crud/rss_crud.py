@@ -15,6 +15,9 @@ class RssCRUD(BaseCRUD):
         url: str,
         **kwargs,
     ) -> List[RssFeed]:
+        """
+        Fetch all RSS feeds from URL.
+        """
         offset, limit = kwargs.get("offset"), kwargs.get("limit")
         soup = await BaseCRUD.request("GET", url, response_type="xml")
         feeds = [

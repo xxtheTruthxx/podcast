@@ -72,7 +72,7 @@ async def get_alternative_episode(
     """
     Generate an alternative version of the episode.
     """
-    result = await PodcastCRUD(session).get_by_id(episode_id)
+    result = await PodcastCRUD(session).read_by_id(episode_id)
     if not result:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,

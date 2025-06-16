@@ -22,6 +22,9 @@ class BaseCRUD:
         self,
         obj: type[TypeSQL],
     ) -> TypeSQL:
+        """
+        Create an object.
+        """
         self.session.add(obj)
         await self.session.commit()
         await self.session.refresh(obj)
@@ -29,11 +32,14 @@ class BaseCRUD:
 
     async def read_all(
             self,
-            db_obj: type[TypeSQL],
+            obj: type[TypeSQL],
             **kwargs,
         ) -> List[type[TypeSQL]]:
+        """
+        Read all objects from the table.
+        """
         offset, limit = kwargs.get("offset"), kwargs.get("limit")
-        statement = select(db_obj).offset(offset).limit(limit)
+        statement = select(obj).offset(offset).limit(limit)
         result = await self.session.execute(statement)
         return result.scalars().all()
     

@@ -1,8 +1,11 @@
+from typing import Any, Optional
+
+# Third-party Dependencies
 from langchain_groq import ChatGroq 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import SystemMessage
-from typing import Any, Optional
 
+# Local Dependencies
 from core.logger import logger
 from core.config import settings
 
@@ -22,6 +25,9 @@ class GroqClient:
         self.template: Optional[ChatPromptTemplate] = None
 
     def create_template(self, prompt: str) -> 'GroqClient':
+        """
+        Create a prompt template for the chat model.
+        """
         try:
             self.template = ChatPromptTemplate.from_messages(
                 [
@@ -33,9 +39,15 @@ class GroqClient:
             )
             return self
         except Exception as err:
-            logger.error(err)
+            logger.error(
+                {"msg": "An error occured while creating prompt template.",
+                 "error": err
+                })
 
     async def ask(self, prompt: Any):
+        """
+        Provide a prompt for the chat model.
+        """
         chain = self.template | self.llm
         try:
             response = await chain.ainvoke(
@@ -43,4 +55,7 @@ class GroqClient:
             )
             return response.content
         except Exception as err:
-            logger.error(err)
+            logger.error(
+                {"msg": "An error occurred while chatting with chat model.",
+                 "error": err
+                })

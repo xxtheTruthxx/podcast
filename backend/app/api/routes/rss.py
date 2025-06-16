@@ -51,12 +51,13 @@ async def post_rss_feed(
     Post an episode from the RSS Feed.
     """
     rss = await RssCRUD.request("GET", settings.RSS_URL, response_type="xml")
-    feed = rss.find("title", string=episode.title).find_parent()
-    if not feed:
+    element = rss.find("title", string=episode.title)
+    if not element:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Episode not found."
         )
+    feed = element.find_parent()
     episode = PodcastEpisode(
         title=feed.find("title").text,
         description=feed.find("description").text,

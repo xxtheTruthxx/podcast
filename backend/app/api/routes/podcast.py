@@ -81,7 +81,7 @@ async def get_alternative_episode(
     origional_episode = PodcastEpisodeBase.model_validate(result)
 
     groq = GroqClient(
-        model="llama-3.1-8b-instant",
+        model="gemma2-9b-it",
     ).create_template(
         prompt=message.prompt
     )

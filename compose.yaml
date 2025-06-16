@@ -13,16 +13,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    volumes:
-      - ./backend/postgres-data:/var/lib/postgresql/data
 
   backend:
     build: 
       context: .
       dockerfile: Dockerfile
+    restart: always
     env_file:
       - .env
     ports:
       - "8000:80"
-    # depends_on:
-    #   # - db

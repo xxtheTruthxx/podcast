@@ -27,14 +27,16 @@ router = APIRouter(tags=["RSS Feed"])
     response_model=List[RssFeed],
     status_code=status.HTTP_200_OK)
 async def fetch_rss_feed(
-    length: Optional[int] = None
+    offset: int = 0,
+    limit: Optional[int] = None
 ):
     """
     Fetch all episodes from the RSS Feed.      
     """
-    feeds = await RssCRUD.get_all(
+    feeds = await RssCRUD.fetch_all(
         url=settings.RSS_URL,
-        length=length
+        offset=offset,
+        limit=limit
     )
     return feeds
 
@@ -48,9 +50,7 @@ async def post_rss_feed(
     """
     Post an episode from the RSS Feed.
     """
-    rss = await RssCRUD._fetch_rss(
-        url=settings.RSS_URL,
-    )
+    rss = await RssCRUD.request("GET", settings.RSS_URL, response_type="xml")
     feed = rss.find("title", string=episode.title).find_parent()
     if not feed:
         raise HTTPException(

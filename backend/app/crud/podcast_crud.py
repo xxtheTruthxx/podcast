@@ -15,4 +15,3 @@ class PodcastCRUD(BaseCRUD):
        statement = select(PodcastEpisode).where(PodcastEpisode.id == id)
        result = await self.session.execute(statement)
        return result.scalar_one_or_none()
-        

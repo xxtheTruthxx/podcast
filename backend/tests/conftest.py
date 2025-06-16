@@ -30,8 +30,6 @@ async def test_async_db_engine():
     async with test_async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
     yield test_async_engine
-    # async with test_async_engine.begin() as conn:
-    #     await conn.run_sync(SQLModel.metadata.drop_all)
 
 @pytest_asyncio.fixture(scope="function")
 async def test_async_session(test_async_db_engine):

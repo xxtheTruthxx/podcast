@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     DB_NAME: str
 
     GROQ_API_KEY: str
+    TELEGRAM_BOT_TOKEN: str
+    TELEGRAM_CHAT_ID: int
     RSS_URL: str
 
 settings = Settings()

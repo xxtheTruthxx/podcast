@@ -17,12 +17,9 @@ from app.api.dependencies import get_async_session
 from app.core.config import DB_URL
 from app.main import app
 
-TEST_DB = "postgresql+asyncpg://dephhjkssyjfzyblmcan:NzlkNDdkNzk4YTNiNzc0@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
-
 # Create a test async engine instance
 test_async_engine = create_async_engine(
     DB_URL,
-    # TEST_DB,
     echo=False,
     poolclass=NullPool
 )
@@ -52,9 +49,6 @@ async def test_async_session(test_async_db_engine):
 
 @pytest_asyncio.fixture(scope="function", autouse=True)
 async def test_async_client(test_async_session) -> AsyncGenerator[AsyncClient, None]:
-    # async def override_async_session() -> AsyncGenerator[AsyncSession, None]:
-        # yield test_async_session
-
     app.dependency_overrides[get_async_session] = lambda: test_async_session
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test"

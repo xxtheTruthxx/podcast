@@ -23,7 +23,9 @@ class BaseCRUD:
     async def read_all(
             self,
             db_obj: type[TypeSQL],
+            **kwargs,
         ) -> List[type[TypeSQL]]:
-        statement = select(db_obj)
+        offset, limit = kwargs.get("offset"), kwargs.get("limit")
+        statement = select(db_obj).offset(offset).limit(limit)
         result = await self.session.execute(statement)
         return result.scalars().all()

@@ -1,10 +1,11 @@
-from typing import List, Annotated
+from typing import List, Optional, Annotated
 
 # Third-party Dependencies
 from fastapi import (
     APIRouter,
     status,
     Path,
+    Query,
     Body
 )
 from fastapi.responses import JSONResponse
@@ -25,12 +26,18 @@ router = APIRouter(tags=["Podcast"])
 @router.get("/episodes",
     response_model=List[PodcastEpisodeBase],
     status_code=status.HTTP_200_OK)
-async def get_all_episodes(
-    session: AsyncSessionDep
+async def get_episodes(
+    session: AsyncSessionDep,
+    offset: int = 0,
+    limit: Optional[Annotated[int, Query()]] = None
 ):
-    """Get all episodes."""
+    """
+    Get all episodes.
+    """
     episodes = await PodcastCRUD(session).read_all(
-        db_obj=PodcastEpisode
+        PodcastEpisode, 
+        offset=offset,
+        limit=limit
     )
     if not episodes:
         return JSONResponse(
@@ -46,22 +53,26 @@ async def create_episode(
     episode: Annotated[PodcastEpisodeBase, Body()],
     session: AsyncSessionDep
 ):
-    """Create an episode."""
-    episode = PodcastEpisode.model_validate(episode)
-    result = await PodcastCRUD(session).create(episode)
-    episode = PodcastEpisodeBase.model_validate(result)
-    return episode
+    """
+    Create an episode.
+    """
+    result = await PodcastCRUD(session).create(
+        PodcastEpisode.model_validate(episode)
+    )
+    return PodcastEpisodeBase.model_validate(result)
 
 @router.post("/episodes/{episode_id}/generate_alternative",
     response_model=PodcastEpisodeAlternative,
     status_code=status.HTTP_200_OK)
 async def get_alternative_episode(
-    episode_id: Annotated[int, Path],
+    episode_id: Annotated[int, Path()],
     message: Annotated[PodcastEpisodeGenerate, Body()],
     session: AsyncSessionDep
 ):
-    """Get alternative episode."""
-    result = await PodcastCRUD(session).get_by_id(id=episode_id)
+    """
+    Generate an alternative version of the episode.
+    """
+    result = await PodcastCRUD(session).get_by_id(episode_id)
     if not result:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,

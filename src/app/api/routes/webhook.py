@@ -21,10 +21,12 @@ router = APIRouter(tags=["Webhook"])
 @router.post("/event",
     status_code=status.HTTP_200_OK)
 async def webhook_event(
-    episode: Annotated[PodcastEpisodeBase, Body],
+    episode: Annotated[PodcastEpisodeBase, Body()],
     session: AsyncSessionDep
 ):
-    """Send a webhook event."""
+    """
+    Send a webhook event.
+    """
     episode = PodcastEpisode.model_validate(episode)
     await PodcastCRUD(session).create(episode)
     return JSONResponse(

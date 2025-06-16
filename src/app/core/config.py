@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
 
-    RSS_ENDPOINT: str
     GROQ_API_KEY: str
+    RSS_URL: str
 
 settings = Settings()
 

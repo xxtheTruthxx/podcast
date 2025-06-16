@@ -30,27 +30,26 @@ async def fetch_rss_feed(
     length: Optional[int] = None
 ):
     """
-        Fetch all episodes from the RSS Feed.      
+    Fetch all episodes from the RSS Feed.      
     """
     feeds = await RssCRUD.get_all(
-        url=settings.RSS_ENDPOINT,
+        url=settings.RSS_URL,
         length=length
     )
     return feeds
 
 @router.post("/post",
     response_model=PodcastEpisodeBase,
-    status_code=status.HTTP_201_CREATED
-)
+    status_code=status.HTTP_201_CREATED)
 async def post_rss_feed(
     episode: Annotated[RssFeedPost, Body()],
     session: AsyncSessionDep
 ):
     """
-        Post an episode from the RSS Feed.
+    Post an episode from the RSS Feed.
     """
     rss = await RssCRUD._fetch_rss(
-        url=settings.RSS_ENDPOINT,
+        url=settings.RSS_URL,
     )
     feed = rss.find("title", string=episode.title).find_parent()
     if not feed:

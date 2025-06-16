@@ -25,8 +25,8 @@ async def webhook_event(
     session: AsyncSessionDep
 ):
     """Send a webhook event."""
-    db_obj = PodcastEpisode.model_validate(episode)
-    await PodcastCRUD(session).create(db_obj)
+    episode = PodcastEpisode.model_validate(episode)
+    await PodcastCRUD(session).create(episode)
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={"status": "Episode added."}

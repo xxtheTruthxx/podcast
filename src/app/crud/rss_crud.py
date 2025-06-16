@@ -17,7 +17,6 @@ class RssCRUD(BaseCRUD):
     def __init__(self, session):
         super().__init__(session)
 
-
     @classmethod
     async def get_all(
         cls,

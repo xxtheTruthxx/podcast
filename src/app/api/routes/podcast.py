@@ -47,8 +47,8 @@ async def create_episode(
     session: AsyncSessionDep
 ):
     """Create an episode."""
-    db_obj = PodcastEpisode.model_validate(episode)
-    result = await PodcastCRUD(session).create(db_obj)
+    episode = PodcastEpisode.model_validate(episode)
+    result = await PodcastCRUD(session).create(episode)
     episode = PodcastEpisodeBase.model_validate(result)
     return episode
 

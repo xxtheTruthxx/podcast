@@ -1,7 +1,7 @@
 from sqlmodel import select
 
-from .base import BaseCRUD
-
+# Local Dependencies
+from .base_crud import BaseCRUD
 from core.models.podcast import (
     PodcastEpisodeBase,
     PodcastEpisode

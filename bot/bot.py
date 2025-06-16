@@ -3,7 +3,7 @@ import asyncio
 import os
 
 from aiogram import Bot, Router, Dispatcher    
-from aiogram.filters import Command
+from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 from helpers.utils import HTTPRequest
@@ -21,27 +21,14 @@ dp = Dispatcher()
 router = Router()
 dp.include_router(router) 
 
-@router.message(Command("start"))
+@router.message(CommandStart())
 async def start(message: Message):
-    async with HTTPRequest("https://api.ipify.org/") as http:
-        data = await http.get()
-        print(data)
-    # response = await HTTPRequest("https://api.ipify.org/").get()
-    # print(response)
-    # await message.answer("response")
-
-    # kb = [
-        # [
-            # KeyboardButton(text="Info")
-        # ]
-    # ]
-    
-    # keyboard = ReplyKeyboardMarkup(
-        # keyboard=kb,
-        # resize_keyboard=True,
-        # input_field_placeholder="Choose an action"
-    # )
-
+    message.answer(
+        "Hello"
+    )
+    # async with HTTPRequest("https://api.ipify.org/") as http:
+        # data = await http.get()
+        # print(data)
 
 # Main function to run the bot
 async def main():

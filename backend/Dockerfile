@@ -6,16 +6,16 @@ WORKDIR /app/
 
 RUN pip install --no-cache-dir poetry
 
-COPY pyproject.toml /app/
+COPY ./pyproject.toml /app/
 
+# Install dependencies
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root
+    
+COPY ./src/app/ /app/    
 
-COPY /src .
-COPY .env .
-
-ENV PYTHONPATH=/app/src/app
+ENV PYTHONPATH=.
 
 EXPOSE 80
 
-CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]

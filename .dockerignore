@@ -1,8 +1,5 @@
-__pycache__
-app.egg-info
+__pycache__/
 *.pyc
-.mypy_cache
-.coverage
 .venv/
 .git
 venv/

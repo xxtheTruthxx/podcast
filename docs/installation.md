@@ -52,11 +52,12 @@ python bot/bot.py
 
 ## **Docs**
 
+    # Project docs (MkDocs): 
+    - http://localhost:8005
+
     # Swagger UI:
     - http://localhost:8000/docs
     
     # ReDoc UI:
     - http://localhost:8000/redoc
     
-    # Project docs (MkDocs): 
-    - http://localhost:8005

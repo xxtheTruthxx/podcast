@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     DB_NAME: str
 
     GROQ_API_KEY: str
+    GROQ_MODEL_TEMPLATE: str
     TELEGRAM_BOT_TOKEN: str
     TELEGRAM_CHAT_ID: int
     RSS_URL: str

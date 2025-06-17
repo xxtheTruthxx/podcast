@@ -11,6 +11,7 @@ from fastapi import (
 from fastapi.responses import JSONResponse
 
 # Local Dependencies
+from core.config import settings
 from core.models.podcast import (
     PodcastEpisode,
     PodcastEpisodeBase,
@@ -83,7 +84,7 @@ async def get_alternative_episode(
     groq = GroqClient(
         model="gemma2-9b-it",
     ).create_template(
-        prompt=message.prompt
+        prompt=f"{settings.GROQ_MODEL_TEMPLATE}. Prompt: {message.prompt}."
     )
     target = getattr(origional_episode, message.target)
     generated_alternative = await groq.ask(target)
@@ -92,5 +93,5 @@ async def get_alternative_episode(
         target=message.target,
         prompt=message.prompt,
         original_episode=origional_episode,
-        generated_alternative=generated_alternative
+        generated_alternative=generated_alternative.strip()
     )

@@ -1,6 +1,6 @@
 # Examples
 
-### **Level 1: Podcast Episode CRUD (REST API Basics)**
+### **Level 1: Podcast Episode CRUD**
 
 **GOAL:**
 
@@ -18,7 +18,7 @@ Build a FastAPI backend with endpoints to manage a list of podcast episodes in m
 
 ![get-podcast-episodes](images/get-podcast-episodes.png)
 
-### **Level 2: LLM Alternative Title/Description Generation (Free API Required)**
+### **Level 2: LLM Alternative Title/Description Generation**
 
 **GOAL:**
 
@@ -30,7 +30,19 @@ Add an endpoint that takes an existing podcast episode (by ID) and uses a free L
 
 ![post-podcast-episodes-id-generate_alternative](images/post-podcast-episodes-id-generate_alternative.png)
 
-### **Level 4: Webhook Endpoint (Optional)**
+### **Level 3: Telegram Bot Integration**
+
+**GOAL**
+
+Create a Telegram bot that connects to your backend and generates alternative podcast episode titles or descriptions on request.
+
+**Endpoints:**
+
+- **/alt**: /alt 1 title Rewrite the title for GenZ.
+
+![alt-command-bot](images/alt-command-bot.png)
+
+### **Level 4: Webhook Endpoint**
 
 **GOAL:**
 
@@ -44,7 +56,7 @@ Expose a webhook endpoint for adding external podcast episodes.
 
 ![post-webhook-episodes-telegram.png](images/post-webhook-episodes-event-telegram.png)
 
-### **Level 5: RSS Feed Integration (Optional)**
+### **Level 5: RSS Feed Integration**
 
 **GOAL:**
 

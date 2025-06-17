@@ -33,15 +33,21 @@ pip install poetry
 
 poetry install --no-root
 
-docker compose up
+docker compose up # -d
 ```
 
-If you're want to using dedicated server for the PostgreSQL instead of local (Docker Image).
+If you want to use dedicated PostgreSQL server instead of running it locally in a Docker container, simply execute the following command.
 
 ```bash
-bash scripts/run.sh backend mkdocs
+bash scripts/run.sh backend mkdocs # -d
 # or
-docker compose up backend mkdocs
+docker compose up backend mkdocs # -d
+```
+
+If you want to run the Telegram bot, simply execute the following command in the project root:
+
+```bash
+python bot/bot.py
 ```
 
 ## **Docs**

@@ -9,7 +9,7 @@ Follow this guide step-by-step.
 
 ## **Configure**
 
-You must update configs in the `.env` file. 
+You must rename `.env.example` to `.env` and fill in your required secrets and configuration values. 
 
 > If you're using Docker container with a PostgreSQL database, ensure that the `DB_PASSWORD` in your `.env` file matches the one defined in your `compose.yaml`. 
 

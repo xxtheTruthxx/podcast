@@ -28,6 +28,8 @@ PostgreSQL setup options:
 - Local setup: Recommend to use Docker container for development stages due to simplicity, isolation and portability across environments.
 - Producation setup: Use PostgreSQL hosting platforms for a managed experience and easier deployment. (e.g., [Supabase](https://supabase.com/))
 
+*If you want to use Supabase, you must connect via the `session pooler`.*
+
 #### **- Why I use Groq as the LLM API?**
 Because, It offers a free tier with good speed and perfomance, making it good choice for development or even producation. </br>
 For the `GroqClient`, I use LangChain framework. [LangChain](https://www.langchain.com/) is a framework that makes it easy to build application with LLMs. </br>
@@ -46,7 +48,7 @@ Combined with `Groq API` to achieve fast inference speed and maintain simplicity
 I used the `Beatiful Soap 4` and `lxml` libraries. `Beatiful Soap 4` is a Python library that makes it easy to parse information from HTML and XML documents. The `lxml` is the most feature-rich, easy-to-use and fastest library for processing XML and HTML in the Python language. Together, they allow efficient parsing of RSS feeds, which are XML-based.
 
 #### **- How to check environment configuration (variables)?**
-In the `.env.example` file.
+In the `.env` file.
 
 #### **- Why I'm having trouble with tests (using `pytest`)?**
 FastAPI has asynchronous features make it one of the best web frameworks. However, because of its use of asynchronous code, testing a FastAPI API can be more complex than a standard synchronous API.</br>

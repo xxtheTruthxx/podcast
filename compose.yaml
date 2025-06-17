@@ -1,3 +1,4 @@
+version: '3'
 services:
   postgres:
     image: postgres:latest
@@ -23,3 +24,12 @@ services:
       - .env
     ports:
       - "8000:80"
+
+  mkdocs:
+    image: squidfunk/mkdocs-material
+    ports:
+      - "8005:8000"
+    volumes:
+      - ./:/docs
+    stdin_open: true
+    tty: true

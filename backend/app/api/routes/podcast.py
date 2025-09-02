@@ -3,12 +3,14 @@ from typing import List, Optional, Annotated
 # Third-party Dependencies
 from fastapi import (
     APIRouter,
+    Request,
     status,
     Path,
     Query,
     Body
 )
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 # Local Dependencies
 from core.config import settings
@@ -24,10 +26,14 @@ from crud import PodcastCRUD
 
 router = APIRouter(tags=["Podcast"])
 
+# Initilize Jinja2
+templates = Jinja2Templates(directory="templates")
+
 @router.get("/episodes",
-    response_model=List[PodcastEpisodeBase],
+    response_class=HTMLResponse,
     status_code=status.HTTP_200_OK)
 async def get_episodes(
+    request: Request,
     session: AsyncSessionDep,
     offset: int = 0,
     limit: Optional[Annotated[int, Query()]] = None
@@ -45,7 +51,13 @@ async def get_episodes(
             status_code=status.HTTP_404_NOT_FOUND,
             content={"error": "Episodes not found."}
         )
-    return episodes
+    
+    return templates.TemplateResponse(
+      request=request, name="components/episodes.html", context={
+        "request": request,
+        "episodes": episodes
+      }
+    )
 
 @router.post("/episodes",
     response_model=PodcastEpisodeBase,

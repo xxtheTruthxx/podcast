@@ -4,13 +4,12 @@ from contextlib import asynccontextmanager
 from starlette.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 # Local Dependencies
 from core.config import settings
 from api.api import api_router
 from core.db.database import async_engine
-
-# delete this
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,6 +26,9 @@ app = FastAPI(
     version=settings.VERSION,
     lifespan=lifespan
 )
+
+# Serve static files at /static
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,

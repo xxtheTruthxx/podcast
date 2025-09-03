@@ -5,10 +5,6 @@ import warnings
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import select
 import aiohttp
-from bs4 import (
-    BeautifulSoup,
-    XMLParsedAsHTMLWarning
-)
 
 # Local Dependencies
 from core.config import TypeSQL
@@ -68,10 +64,6 @@ class BaseCRUD:
                             return await response.json()
                         elif response_type == "bytes":
                             return await response.read()
-                        elif response_type == "xml":
-                            warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-                            markup = await response.text()
-                            return BeautifulSoup(markup, "lxml")
                         else:
                             raise aiohttp.ClientError(f"Unsupported response_type: {response_type}")
                     else:

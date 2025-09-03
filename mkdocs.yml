@@ -1,9 +1,8 @@
 site_name: PodGen Doc
 site_url: https://docs.podgen.org/
 nav:
-  - Home: index.md
   - Installation: installation.md
-  - Examples: examples.md
+  - report: report.md
 theme:
   name: material
   favicon: favicon.svg

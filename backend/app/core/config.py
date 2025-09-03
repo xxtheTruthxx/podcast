@@ -27,7 +27,6 @@ class Settings(BaseSettings):
     GROQ_MODEL_TEMPLATE: str
     TELEGRAM_BOT_TOKEN: str
     TELEGRAM_CHAT_ID: int
-    RSS_URL: str
 
 settings = Settings()
 

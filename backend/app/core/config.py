@@ -25,9 +25,9 @@ class Settings(BaseSettings):
 
     GROQ_API_KEY: str
     GROQ_MODEL_TEMPLATE: str
-    TELEGRAM_BOT_TOKEN: str
-    TELEGRAM_CHAT_ID: int
 
+    RSS_URL: str
+    
 settings = Settings()
 
 DB_URL = f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"

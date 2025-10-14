@@ -152,7 +152,7 @@ async def get_alternative_episode(
     origional_episode = PodcastEpisodeBase.model_validate(result)
 
     groq = GroqClient(
-        model="gemma2-9b-it",
+        model=settings.GROQ_MODEL,
     ).create_template(
         prompt=f"{settings.GROQ_MODEL_TEMPLATE}. Prompt: {prompt}."
     )

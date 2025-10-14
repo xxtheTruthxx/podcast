@@ -25,6 +25,7 @@ class Settings(BaseSettings):
 
     GROQ_API_KEY: str
     GROQ_MODEL_TEMPLATE: str
+    GROQ_MODEL: str
 
     RSS_URL: str
     

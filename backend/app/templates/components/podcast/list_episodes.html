@@ -19,7 +19,7 @@
             <button type="submit" class="button is-danger"  onclick="deleteEpisode('{{ episode.id }}')" style="padding: 10px 20px; background: var(--first-color); color: #fff;">
               Delete
             </button>
-            <a href="/api/v1/podcast/episodes/{{ episode.id }}/generate_alternative" class="button is-warning" style="padding: 10px 20px; background: var(--first-color); color: #fff;">
+            <a href="/podcast/episodes/{{ episode.id }}/generate_alternative" class="button is-warning" style="padding: 10px 20px; background: var(--first-color); color: #fff;">
               Generate Alternative
             </a>
           </div>
@@ -32,7 +32,7 @@
   async function deleteEpisode(id) {
     if (!confirm('Are you sure you want to delete this episode?')) return;
 
-    const response = await fetch(`/api/v1/podcast/episodes/${id}/delete`, {
+    const response = await fetch(`/podcast/episodes/${id}/delete`, {
       method: 'DELETE'
   });
 

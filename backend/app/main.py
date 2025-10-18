@@ -19,7 +19,7 @@ async def lifespan(app: FastAPI):
     yield
     await async_engine.dispose()
 
-# Initilize an application
+# Initialize an application
 app = FastAPI(
     title=settings.NAME,
     description=settings.DESCRIPTION,
@@ -38,4 +38,4 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(api_router)

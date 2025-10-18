@@ -21,6 +21,18 @@ class RssCRUD(BaseCRUD):
        return tag.get_text(strip=True) if tag else default
 
     @classmethod
+    async def extract_soup(cls, url:str) -> BeautifulSoup:
+      headers = {"User-Agent": "Mozilla/5.0 (compatible; MyPodcastFetcher/1.0; +https://example.com"}
+
+      async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=headers) as response:
+          content = await response.text()
+
+      warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+      soup = BeautifulSoup(content, "lxml-xml")
+      return soup
+
+    @classmethod
     async def fetch_all(
         cls,
         *,
@@ -32,15 +44,10 @@ class RssCRUD(BaseCRUD):
         """
         offset = kwargs.get("offset", 0)
         limit = kwargs.get("limit", None)
-      
-        headers = {"User-Agent": "Mozilla/5.0 (compatible; MyPodcastFetcher/1.0; +https://example.com"}
- 
-        async with aiohttp.ClientSession() as session:
-          async with session.get(url, headers=headers) as response:
-            content = await response.text()
 
-        warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-        soup = BeautifulSoup(content, "lxml-xml")
+
+        # Extract from xml
+        soup = await cls.extract_soup(url)
 
         feeds = []
         author_elem = soup.find("itunes:author")

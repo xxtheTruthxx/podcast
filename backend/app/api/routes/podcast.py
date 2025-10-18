@@ -111,7 +111,7 @@ async def create_episode(
     
     await PodcastCRUD(session).create(episode)
 
-    return RedirectResponse(f"{settings.API_V1_STR}/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(f"/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/episodes/{episode_id}/generate_alternative",
   response_class=HTMLResponse,
@@ -174,7 +174,7 @@ async def get_alternative_episode(
         }
       )
 
-    return RedirectResponse(f"{settings.API_V1_STR}/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(f"/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.delete("/episodes/{episode_id}/delete",
   status_code=status.HTTP_200_OK,

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="feed" id="feed">
+  <h1>
+    {{ feed.title }}
+  </h1>
+  <p>
+    {{ feed.description }}
+  </p>
+  <img src="{{ feed.image_url }}" alt="{{ feed.title }}">
+  {{ feed.date }}
+  <a href="{{ feed.author }}">Read More</a>
+</section>
+{% endblock %}

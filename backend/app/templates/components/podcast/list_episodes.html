@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="episodes__header">
+    <h1 class="section__title-center">Your Episodes</h1>
+    <div class="episodes__actions">
+      <a href="/podcast/episodes/create" class="button button--primary">
+        <i class="ri-add-circle-line"></i> Create New Episode
+      </a>
+      <a href="/podcast/" class="button button--secondary">
+        <i class="ri-home-line"></i> Back to Home
+      </a>
+    </div>
+  </div>
+    
+  <div class="episode__container">
+      {% for episode in episodes %}
+        <article class="episode__article">
+          <div class="episode__card">
+            <div class="episode__content">
+              <div class="episode__header">
+                <h3 class="episode__name">{{ episode.title }}</h3>
+                <span class="episode__id">#{{ episode.id }}</span>
+              </div>
+              <p class="episode__description">{{episode.description}}</p>
+              <div class="episode__meta">
+                <span class="episode__author">
+                  <i class="ri-user-line"></i> {{episode.host}}
+                </span>
+              </div>
+            </div>
+            
+            <div class="episode__actions">
+              <button type="button" class="button button--danger" onclick="deleteEpisode('{{ episode.id }}')">
+                <i class="ri-delete-bin-line"></i> Delete
+              </button>
+              <a href="/podcast/episodes/{{ episode.id }}/generate_alternative" class="button button--warning">
+                <i class="ri-magic-line"></i> Generate Alternative
+              </a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    
+    {% if not episodes %}
+    <div class="episodes__empty">
+      <div class="episodes__empty-icon">
+        <i class="ri-mic-line"></i>
+      </div>
+      <h3 class="episodes__empty-title">No Episodes Yet</h3>
+      <p class="episodes__empty-description">
+        Start creating amazing podcast episodes with AI-powered tools.
+      </p>
+      <a href="/podcast/episodes/create" class="button button--primary">
+        <i class="ri-add-circle-line"></i> Create Your First Episode
+      </a>
+    </div>
+    {% endif %}
+</section>
+
+<script>
+  async function deleteEpisode(id) {
+    if (!confirm('Are you sure you want to delete this episode? This action cannot be undone.')) return;
+
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    // Show loading state
+    button.innerHTML = '<i class="ri-loader-4-line"></i> Deleting...';
+    button.disabled = true;
+
+    try {
+      const response = await fetch(`/podcast/episodes/${id}/delete`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // Add fade out animation
+        const episodeCard = button.closest('.episode__article');
+        episodeCard.style.transition = 'all 0.3s ease';
+        episodeCard.style.opacity = '0';
+        episodeCard.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          episodeCard.remove();
+          
+          // Check if no episodes left
+          const remainingEpisodes = document.querySelectorAll('.episode__article');
+          if (remainingEpisodes.length === 0) {
+            window.location.reload();
+          }
+        }, 300);
+      } else {
+        throw new Error('Failed to delete episode');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to delete episode. Please try again.');
+      
+      // Restore button state
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }
+  }
+</script>
+{% endblock %}

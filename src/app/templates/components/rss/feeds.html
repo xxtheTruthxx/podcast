@@ -4,9 +4,9 @@
 <section class="section">
   <h1 class="section__title-center">New Episodes</h1>
     
-  <div class="episode__container">
+  <div class="episode__container container">
       {% for feed in feeds %}
-        <article>
+      <a href="/rss/feed/{{feed.uuid}}">
           <div class="episode__card">
             <div>
               <img src="{{ feed.image_url }}" alt="{{ feed.title }}">
@@ -15,11 +15,8 @@
               <span class="episode__description">{{ feed.description[:100] }}...</span>
             </div>
             <span class="episode__author">- {{ feed.author }}</span>
-            <span>{{ feed.origin }}</span>
-            <span>{{ feed.uuid }}</span>
           </div>
-          <a href=""></a>
-        </article>
+        </a>
       {% endfor %}
     </div>
 </section>

@@ -1,8 +1,50 @@
 <header class="header" id="header">
   <nav class="nav container">
-    <a href="#" class="nav__logo">
+    <a href="/podcast/" class="nav__logo">
       <i class="ri-mic-2-fill"></i> {{ title }}
     </a>
+    
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a href="/" class="nav__link">
+            <i class="ri-home-line"></i> Home
+          </a>
+        </li>
+        <li class="nav__item">
+          <a href="/about" class="nav__link">
+            <i class="ri-info-i"></i> About
+          </a>
+        </li>
+        <li class="nav__item">
+          <a href="/podcast/episodes/all" class="nav__link">
+            <i class="ri-list-check-2"></i> Episodes
+          </a>
+        </li>
+        <li class="nav__item">
+          <a href="/podcast/episodes/create" class="nav__link">
+            <i class="ri-add-circle-line"></i> Create
+          </a>
+        </li>
+        <li class="nav__item">
+          <a href="/rss/feeds" class="nav__link">
+            <i class="ri-rss-fill"></i> RSS
+          </a>
+        </li>
+        <li class="nav__item">
+          <a href="/docs" class="nav__link" target="_blank">
+            <i class="ri-book-open-line"></i> Docs
+          </a>
+        </li>
+      </ul>
+      
+      <div class="nav__close" id="nav-close">
+        <i class="ri-close-line"></i>
+      </div>
+    </div>
+    
+    <div class="nav__toggle" id="nav-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
   </nav>
 </header>
-

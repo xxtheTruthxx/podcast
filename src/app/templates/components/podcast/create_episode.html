@@ -2,36 +2,88 @@
 
 {% block content %}
 <section class="section">
-  <h1 class="section__title-center">Create a New Episode</h1>
+  <div class="create__header">
+    <h1 class="section__title-center">Create a New Episode</h1>
+    <p class="create__subtitle">Fill in the details below to create your podcast episode</p>
+  </div>
 
-  <div class="episode__create-container container" style="display: flex; align-items: center; justify-content: center;">
-      <form class="episode__create-form" action="{{ url_for('create_episode') }}" method="post" style="row-gap: 20px; display: grid;">
-        <div class="episode__create-field">
-          <label class="episode__create-label">Title</label>
-          <div class="episode__create-control">
-            <input class="input" type="text" name="title" required>
+  <div class="create__container container">
+    <div class="create__form-wrapper">
+      <form class="create__form" action="{{ url_for('create_episode') }}" method="post" id="episode-form">
+        <div class="form__field">
+          <label class="form__label">
+            <i class="ri-mic-line"></i> Episode Title
+          </label>
+          <div class="form__control">
+            <input 
+              class="form__input" 
+              type="text" 
+              name="title" 
+              placeholder="Enter your episode title..."
+              required
+              autocomplete="off"
+            >
+            <div class="form__help">Choose a compelling title that captures your audience's attention</div>
           </div>
         </div>
     
-        <div class="episode__create-field">
-          <label class="episode__create-label">Description</label>
-          <div class="episode__create-control">
-            <textarea class="textarea" name="description" required></textarea>
+        <div class="form__field">
+          <label class="form__label">
+            <i class="ri-file-text-line"></i> Description
+          </label>
+          <div class="form__control">
+            <textarea 
+              class="form__textarea" 
+              name="description" 
+              placeholder="Describe what this episode is about..."
+              rows="4"
+              required
+            ></textarea>
+            <div class="form__help">Provide a detailed description of your episode content</div>
           </div>
         </div>
     
-        <div class="episode__create-field">
-          <label class="episode__create-label">Host</label>
-          <div class="episode__create-control">
-            <textarea class="textarea" name="host" required></textarea>
+        <div class="form__field">
+          <label class="form__label">
+            <i class="ri-user-line"></i> Host Name
+          </label>
+          <div class="form__control">
+            <input 
+              class="form__input" 
+              type="text" 
+              name="host" 
+              placeholder="Enter the host's name..."
+              required
+              autocomplete="off"
+            >
+            <div class="form__help">Who will be hosting this episode?</div>
           </div>
         </div>
         
-        <div class="episode__create-control">
-          <button type="submit" class="button is-success" style="padding: 20px 10px; background: var(--first-color); color: #fff;">Save Episode</button>
+        <div class="form__actions">
+          <button type="submit" class="button button--primary button--large" id="submit-btn">
+            <i class="ri-save-line"></i> Create Episode
+          </button>
+          <a href="/podcast/episodes/all" class="button button--secondary">
+            <i class="ri-arrow-left-line"></i> Back to Episodes
+          </a>
         </div>
       </form>
+    </div>
   </div>
 </section>
 
+<script>
+  document.getElementById('episode-form').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submit-btn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="ri-loader-4-line"></i> Creating Episode...';
+    submitBtn.disabled = true;
+    
+    // Add loading class to form
+    this.classList.add('form--loading');
+  });
+</script>
 {% endblock %}

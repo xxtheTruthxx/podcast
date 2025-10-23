@@ -1,8 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="about" id="about">
+<section class="home" id="about">
+                <div class="home__container container grid">
+                  <div style="margin-inline: 20px;">
+                    <img src="{{ url_for('static', path='./assets/about-1.jpg') }}" alt="Podcast Studio" class="home__img">
+                  </div>
 
-  about
-</section>
+                    <div class="home__data">
+                        <h1 class="home__title">
+                            About Us
+                        </h1>
+                        <p class="home__description">
+                          <strong>Podcast</strong> is a podcast episodes generator service. Users can create podcast episodes,
+                          fetch a list of episodes, auto-generate alternative titles or descriptions via LLM, integrate external episodes via RSS.
+                        </p>
+                    </div>
+
+                    <div class="home__buttons">
+                            <a href="/rss/feeds" class="button button--primary">
+                                <i class="ri-rss-fill"></i>News RSS
+                            </a>
+                            <a href="/podcast/episodes/all" class="button button--secondary">
+                                <i class="ri-list-check-2"></i> View Episodes
+                            </a>
+                    </div>
+                </div>
+            </section>
 {% endblock %}

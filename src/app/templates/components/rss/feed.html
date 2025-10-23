@@ -1,15 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="feed" id="feed">
-  <h1>
-    {{ feed.title }}
-  </h1>
-  <p>
-    {{ feed.description }}
-  </p>
-  <img src="{{ feed.image_url }}" alt="{{ feed.title }}">
-  {{ feed.date }}
-  <a href="{{ feed.author }}">Read More</a>
+<section class="section">
+  <div class="feed__container container">
+    <article class="feed__card grid">
+      <div style="align-items: center; display: flex; justify-content: center;">
+        <img src="{{ feed.image_url }}" class="feed__img" alt=" {{ feed.title }} ">
+      </div>
+      
+      <div class="feed__data grid">
+        <h2 class="feed__title">{{ feed.title }}</h2>
+        <p class="feed__description"> {{feed.description}} </p>
+        <span class="feed__date">{{ feed.date }}</span>
+      </div>
+      
+      <div class="feed__buttons">
+        <a href="{{ feed.origin }}" class="button button--primary">Read origin</a>
+        <a href="/rss/feed/{{ feed.uuid }}/add" class="button button--secondary">Add</a>
+      </div>
+    </article>
+  </div>
 </section>
 {% endblock %}

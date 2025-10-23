@@ -2,29 +2,90 @@
 
 {% block content %}
 <section class="section">
-  <h1 class="section__title-center">Generate alternative episode</h1>
+  <div class="generate__header">
+    <h1 class="section__title-center">Generate Alternative Content</h1>
+    <p class="generate__subtitle">Use AI to create alternative titles or descriptions for your episode</p>
+  </div>
 
-  <div class="episode__create-container container" style="display: flex; align-items: center; justify-content: center;">
-      <form class="episode__create-form" action="{{ url_for('get_alternative_episode', episode_id=episode_id) }}" method="post" style="row-gap: 20px; display: grid;">
-        <div class="episode__create-field">
-          <label class="episode__create-label">Target</label>
-          <div class="episode__create-control">
-            <input class="input" type="text" name="target" required>
+  <div class="generate__container container">
+    <div class="generate__form-wrapper">
+      <form class="generate__form" action="{{ url_for('get_alternative_episode', episode_id=episode_id) }}" method="post" id="generate-form">
+        <div class="form__field">
+          <label class="form__label">
+            <i class="ri-target-line"></i> What to Generate
+          </label>
+          <div class="form__control">
+            <select class="form__select" name="target" required>
+              <option value="">Select what to generate...</option>
+              <option value="title">Alternative Title</option>
+              <option value="description">Alternative Description</option>
+            </select>
+            <div class="form__help">Choose whether to generate a new title or description</div>
           </div>
         </div>
     
-        <div class="episode__create-field">
-          <label class="episode__create-label">Prompt</label>
-          <div class="episode__create-control">
-            <textarea class="textarea" name="prompt" required></textarea>
+        <div class="form__field">
+          <label class="form__label">
+            <i class="ri-magic-line"></i> AI Prompt
+          </label>
+          <div class="form__control">
+            <textarea 
+              class="form__textarea" 
+              name="prompt" 
+              placeholder="Describe the style, tone, or approach you want for the alternative content..."
+              rows="4"
+              required
+            ></textarea>
+            <div class="form__help">Provide specific instructions for the AI to generate content that matches your vision</div>
           </div>
         </div>
-    
-        <div class="episode__create-control">
-          <button type="submit" class="button is-success" style="padding: 20px 10px; background: var(--first-color); color: #fff;">Generate</button>
+        
+        <div class="generate__examples">
+          <h3 class="generate__examples-title">Example Prompts:</h3>
+          <div class="generate__examples-list">
+            <button type="button" class="example__button" onclick="setPrompt('Make it more engaging and clickbait-style')">
+              "Make it more engaging and clickbait-style"
+            </button>
+            <button type="button" class="example__button" onclick="setPrompt('Make it more professional and formal')">
+              "Make it more professional and formal"
+            </button>
+            <button type="button" class="example__button" onclick="setPrompt('Make it shorter and more concise')">
+              "Make it shorter and more concise"
+            </button>
+            <button type="button" class="example__button" onclick="setPrompt('Make it more humorous and casual')">
+              "Make it more humorous and casual"
+            </button>
+          </div>
+        </div>
+        
+        <div class="form__actions">
+          <button type="submit" class="button button--primary button--large" id="generate-btn">
+            <i class="ri-magic-line"></i> Generate Alternative
+          </button>
+          <a href="/podcast/episodes/all" class="button button--secondary">
+            <i class="ri-arrow-left-line"></i> Back to Episodes
+          </a>
         </div>
       </form>
+    </div>
   </div>
 </section>
 
+<script>
+  function setPrompt(prompt) {
+    document.querySelector('textarea[name="prompt"]').value = prompt;
+  }
+
+  document.getElementById('generate-form').addEventListener('submit', function(e) {
+    const generateBtn = document.getElementById('generate-btn');
+    const originalText = generateBtn.innerHTML;
+    
+    // Show loading state
+    generateBtn.innerHTML = '<i class="ri-loader-4-line"></i> Generating...';
+    generateBtn.disabled = true;
+    
+    // Add loading class to form
+    this.classList.add('form--loading');
+  });
+</script>
 {% endblock %}

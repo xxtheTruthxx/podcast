@@ -1,0 +1,20 @@
+# Third-party Dependencies
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine
+)
+
+# Local Dependencies
+from core.config import DB_URL
+
+# Create an async engine instance
+async_engine = create_async_engine(DB_URL, echo=True, pool_pre_ping=True)
+
+# Create a reusable Session class for consistent database interactions 
+async_session = async_sessionmaker(
+    async_engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autoflush=False
+)

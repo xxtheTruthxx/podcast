@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title-center">Generate alternative episode</h1>
+
+  <div class="episode__create-container container" style="display: flex; align-items: center; justify-content: center;">
+      <form class="episode__create-form" action="{{ url_for('get_alternative_episode', episode_id=episode_id) }}" method="post" style="row-gap: 20px; display: grid;">
+        <div class="episode__create-field">
+          <label class="episode__create-label">Target</label>
+          <div class="episode__create-control">
+            <input class="input" type="text" name="target" required>
+          </div>
+        </div>
+    
+        <div class="episode__create-field">
+          <label class="episode__create-label">Prompt</label>
+          <div class="episode__create-control">
+            <textarea class="textarea" name="prompt" required></textarea>
+          </div>
+        </div>
+    
+        <div class="episode__create-control">
+          <button type="submit" class="button is-success" style="padding: 20px 10px; background: var(--first-color); color: #fff;">Generate</button>
+        </div>
+      </form>
+  </div>
+</section>
+
+{% endblock %}

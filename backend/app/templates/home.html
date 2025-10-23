@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+            <section class="home" id="home">
+                <div class="home__container container grid">
+                    <img src="{{ url_for('static', path='./assets/bg.jpg') }}" alt="Podcast Studio" class="home__img">
+
+                    <div class="home__data">
+                        <h1 class="home__title">
+                            Create Amazing Podcasts <br> with AI-Powered Tools
+                        </h1>
+                        <p class="home__description">
+                            Generate compelling episode titles, descriptions, and content ideas. 
+                            Let AI help you create fresh, engaging podcast content that captivates your audience.
+                        </p>
+                        
+                        <div class="home__buttons">
+                            <a href="/podcast/episodes/create" class="button button--primary">
+                                <i class="ri-add-circle-line"></i> Create Episode
+                            </a>
+                            <a href="/podcast/episodes/all" class="button button--secondary">
+                                <i class="ri-list-check-2"></i> View Episodes
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="home__social">
+                        <span class="home__social-follow">Follow Us</span>
+
+                        <div class="home__social-links">
+                            <a href="https://www.facebook.com/vocnuft/" target="_blank" class="home__social-link">
+                                <i class="ri-facebook-fill"></i>
+                            </a>
+                            <a href="https://www.instagram.com/vocnuft/" target="_blank" class="home__social-link">
+                                <i class="ri-instagram-line"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features section" id="features">
+                <div class="container">
+                    <h2 class="section__title-center">Why Choose PodGen?</h2>
+                    
+                    <div class="features__container grid">
+                        <div class="features__card">
+                            <div class="features__icon">
+                                <i class="ri-brain-line"></i>
+                            </div>
+                            <h3 class="features__title">AI-Powered Generation</h3>
+                            <p class="features__description">
+                                Generate alternative titles and descriptions using advanced AI models.
+                            </p>
+                        </div>
+                        
+                        <div class="features__card">
+                            <div class="features__icon">
+                                <i class="ri-speed-up-line"></i>
+                            </div>
+                            <h3 class="features__title">Fast & Efficient</h3>
+                            <p class="features__description">
+                                Create and manage podcast episodes quickly with our streamlined interface.
+                            </p>
+                        </div>
+                        
+                        <div class="features__card">
+                            <div class="features__icon">
+                                <i class="ri-palette-line"></i>
+                            </div>
+                            <h3 class="features__title">Creative Freedom</h3>
+                            <p class="features__description">
+                                Explore multiple creative directions for your podcast content.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+{% endblock %}

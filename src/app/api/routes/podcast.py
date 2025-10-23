@@ -28,21 +28,6 @@ router = APIRouter(tags=["Podcast"])
 # Initilize Jinja2
 template = Jinja2Templates(directory="templates")
 
-@router.get("/",
-  response_class=HTMLResponse)
-async def home(
-  request: Request
-):
-  return template.TemplateResponse(
-    request=request,
-    name="home.html",
-    context={
-      "title": "PodGen",
-      "site": {
-        "title": settings.NAME
-      }
-    })
-
 @router.get("/episodes/all",
     response_class=HTMLResponse,
     status_code=status.HTTP_200_OK)

@@ -45,9 +45,18 @@ async def index(
     name="home.html",
     context={
       "title": "PodGen",
-      "site": {
-        "title": settings.NAME
-      }
+    })
+
+@app.get("/about",
+  response_class=HTMLResponse)
+async def index(
+  request: Request
+):
+  return template.TemplateResponse(
+    request=request,
+    name="about.html",
+    context={
+      "title": "PodGen",
     })
 
 app.add_middleware(

@@ -6,6 +6,7 @@ from fastapi import (
     status,
     Request
 )
+from fastapi.responses import RedirectResponse
 
 from fastapi.templating import Jinja2Templates
 from api.dependencies import AsyncSessionDep
@@ -40,7 +41,7 @@ async def load_feed(
         request=request,
         name="components/rss/feed.html",
         context={
-          "title": f"{settings.NAME} | {feed.title}",
+          "title": f"News RSS",
           "feed": feed
         }       
       )
@@ -51,36 +52,34 @@ async def load_feed(
     )
 
 @router.get("/feed/{uuid}/add")
-async def load_feed(
-  request: Request,
-  uuid: str,
-  session: AsyncSessionDep
+async def add_feed(
+    request: Request,
+    uuid: str,
+    session: AsyncSessionDep
 ):
-  """
-  Fetch feed from the RSS Feed.
-  """
+    """
+    Add a feed as a podcast episode.
+    """
 
-  feeds = await RssCRUD.fetch_all(
-    url=settings.RSS_URL,
-  )
-  
-  for feed in feeds:
-    if feed.uuid == uuid:
-      episode = PodcastEpisode(
-        title=feed.title,
-        description=feed.description,
-        host=feed.author
-      )
-      await PodcastCRUD(session).create(episode)
-    else:
-      return template.TemplateResponse(
-        request=request,
-        name="components/rss/feeds.html",
-        context={
-          "feeds": feeds
-        }       
-      )
-
+    feeds = await RssCRUD.fetch_all(url=settings.RSS_URL)
+    for feed in feeds:
+        if feed.uuid == uuid:
+            episode = PodcastEpisode(
+                title=feed.title,
+                description=feed.description,
+                host=feed.author
+            )
+            await PodcastCRUD(session).create(episode)
+            return template.TemplateResponse(
+              request=request,
+              name="components/successful.html",
+                context={"title": "PodGen."}
+            )
+    return template.TemplateResponse(
+      request=request,
+      name="components/notFound.html",
+        context={"title": "Feed not found"}
+    )
 
 @router.get("/feeds",
     response_model=List[RssFeed],
@@ -102,6 +101,7 @@ async def fetch_rss_feeds(
       request=request,
       name="components/rss/feeds.html",
       context={
+        "title": "News RSS",
         "feeds": feeds
       }       
     )

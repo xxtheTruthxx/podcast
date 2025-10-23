@@ -3,3 +3,7 @@ poetry.lock
 .env
 .venv
 venv/
+
+# UV
+podgen.egg-info
+build

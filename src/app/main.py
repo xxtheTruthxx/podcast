@@ -3,13 +3,18 @@ from contextlib import asynccontextmanager
 # Third-party Dependencies
 from starlette.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 # Local Dependencies
 from core.config import settings
 from api.api import api_router
 from core.db.database import async_engine
+
+# Initialize Jinja2
+template = Jinja2Templates(directory="templates")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -29,6 +34,21 @@ app = FastAPI(
 
 # Serve static files at /static
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/",
+  response_class=HTMLResponse)
+async def index(
+  request: Request
+):
+  return template.TemplateResponse(
+    request=request,
+    name="home.html",
+    context={
+      "title": "PodGen",
+      "site": {
+        "title": settings.NAME
+      }
+    })
 
 app.add_middleware(
     CORSMiddleware,

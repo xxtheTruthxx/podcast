@@ -1,4 +1,4 @@
-from typing import Optional, Annotated, Literal
+from typing import Optional, Annotated, List, Literal
 
 # Third-party Dependencies
 from fastapi import (
@@ -174,23 +174,3 @@ async def get_alternative_episode(
       )
 
     return RedirectResponse(f"/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
-
-@router.delete("/episodes/{episode_id}/delete",
-  name="delete_episode")
-async def delete_episode(
-  episode_id: Annotated[int, Path()],
-  session: AsyncSessionDep
-):
-  """
-  Deletes episode using `id`,
-  """
-  if not await PodcastCRUD(session).remove_by_id(episode_id):
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Episode not found."
-      )
-
-  return JSONResponse(
-    status_code=status.HTTP_200_OK,
-    content={"message": "Episode has been removed successfully."}
-  )

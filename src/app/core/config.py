@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     VERSION: str
     API_V1_STR: str = "/api/v1"
 
+    BACKEND_CORS_ORIGINS: list[str]
+
     DB_USERNAME: str
     DB_PASSWORD: str
     DB_HOST: str

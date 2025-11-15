@@ -92,7 +92,7 @@
     button.setAttribute('aria-busy', 'true');
 
     try {
-      const response = await fetch(`/podcast/episodes/${id}/delete`, {
+      const response = await fetch(`/api/v1/podcast/episodes/${id}/delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

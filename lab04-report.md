@@ -38,6 +38,7 @@ PodGen is a podcast episodes generator service. Users can create podcast episode
 
 Наведіть структуру файлів та директорій вашого проєкту:
 
+<<<<<<< HEAD
 ```
   .
   ├── compose.yaml
@@ -119,6 +120,88 @@ PodGen is a podcast episodes generator service. Users can create podcast episode
   │   │       └── home.html
   └── uv.lock
 ```
+=======
+.
+├── compose.yaml
+├── Dockerfile
+├── docs
+│   ├── images
+│   │   ├── alt-command-bot.png
+│   │   ├── get-podcast-episodes-not-found.png
+│   │   ├── get-podcast-episodes.png
+│   │   ├── get-rss-fetch.png
+│   │   ├── post-podcast-episodes-id-generate_alternative.png
+│   │   ├── post-podcast-episodes.png
+│   │   ├── post-rss-post-not-found.png
+│   │   ├── post-rss-post.png
+│   │   ├── post-webhook-episodes-event.png
+│   │   └── post-webhook-episodes-event-telegram.png
+│   ├── installation.md
+│   └── report.md
+├── LICENSE
+├── mkdocs.yml
+├── pyproject.toml
+├── pytest.ini
+├── README.md
+├── scripts
+│   ├── build.sh
+│   ├── clean.sh
+│   └── run.sh
+├── src
+│   ├── app
+│   │   ├── api
+│   │   │   ├── api.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── __init__.py
+│   │   │   └── routes
+│   │   │       ├── __init__.py
+│   │   │       ├── podcast.py
+│   │   │       └── rss.py
+│   │   ├── core
+│   │   │   ├── config.py
+│   │   │   ├── db
+│   │   │   │   ├── database.py
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   ├── logger.py
+│   │   │   ├── models
+│   │   │   │   ├── podcast.py
+│   │   │   │   └── rss.py
+│   │   │   └── services
+│   │   │       ├── groq.py
+│   │   │       └── __init__.py
+│   │   ├── crud
+│   │   │   ├── base_crud.py
+│   │   │   ├── __init__.py
+│   │   │   ├── podcast_crud.py
+│   │   │   └── rss_crud.py
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── static
+│   │   │   ├── assets
+│   │   │   │   ├── about-1.jpg
+│   │   │   │   ├── about-2.jpg
+│   │   │   │   └── bg.jpg
+│   │   │   └── css
+│   │   │       └── styles.css
+│   │   └── templates
+│   │       ├── about.html
+│   │       ├── base.html
+│   │       ├── components
+│   │       │   ├── header.html
+│   │       │   ├── notFound.html
+│   │       │   ├── podcast
+│   │       │   │   ├── create_alternative_episode.html
+│   │       │   │   ├── create_episode.html
+│   │       │   │   └── list_episodes.html
+│   │       │   ├── rss
+│   │       │   │   ├── feed.html
+│   │       │   │   └── feeds.html
+│   │       │   └── successful.html
+│   │       └── home.html
+└── uv.lock
+
+>>>>>>> refs/remotes/origin/master
 
 ### Проектування бази даних
 

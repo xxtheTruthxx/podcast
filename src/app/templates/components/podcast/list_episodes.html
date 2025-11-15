@@ -1,97 +1,122 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section">
-  <div class="episodes__header">
-    <h1 class="section__title-center">Your Episodes</h1>
-    <div class="episodes__actions">
+<section class="section" aria-labelledby="episodes-heading">
+  <header class="episodes__header">
+    <h1 id="episodes-heading" class="section__title-center">Your Episodes</h1>
+    <nav class="episodes__actions" aria-label="Episode actions">
       <a href="/podcast/episodes/create" class="button button--primary">
-        <i class="ri-add-circle-line"></i> Create New Episode
+        <i class="ri-add-circle-line" aria-hidden="true"></i> 
+        <span>Create New Episode</span>
       </a>
       <a href="/" class="button button--secondary">
-        <i class="ri-home-line"></i> Back to Home
+        <i class="ri-home-line" aria-hidden="true"></i> 
+        <span>Back to Home</span>
       </a>
-    </div>
-  </div>
+    </nav>
+  </header>
     
-  <div class="episode__container container">
+  <div class="episode__container container" role="list" aria-label="Podcast episodes">
+    {% if episodes %}
       {% for episode in episodes %}
-        <article class="episode__article">
+        <article class="episode__article" role="listitem" data-episode-id="{{ episode.id }}">
           <div class="episode__card">
             <div class="episode__content">
-              <div class="episode__header">
+              <header class="episode__header">
                 <h3 class="episode__name">{{ episode.title }}</h3>
-                <span class="episode__id">#{{ episode.id }}</span>
-              </div>
-              <p class="episode__description">{{episode.description}}</p>
+                <span class="episode__id" aria-label="Episode ID: {{ episode.id }}">#{{ episode.id }}</span>
+              </header>
+              
+              <p class="episode__description">{{ episode.description }}</p>
+              
               <div class="episode__meta">
-                <span class="episode__author">
-                  <i class="ri-user-line"></i> {{episode.host}}
+                <span class="episode__author" aria-label="Host: {{ episode.host }}">
+                  <i class="ri-user-line" aria-hidden="true"></i> 
+                  <span>{{ episode.host }}</span>
                 </span>
               </div>
             </div>
             
-            <div class="episode__actions">
-              <button type="button" class="button button--danger" onclick="deleteEpisode('{{ episode.id }}')">
-                <i class="ri-delete-bin-line"></i> Delete
+            <footer class="episode__actions" aria-label="Episode actions">
+              <button 
+                type="button" 
+                class="button button--danger" 
+                onclick="deleteEpisode('{{ episode.id }}', this)"
+                aria-label="Delete episode {{ episode.title }}"
+              >
+                <i class="ri-delete-bin-line" aria-hidden="true"></i> 
+                <span>Delete</span>
               </button>
-              <a href="/podcast/episodes/{{ episode.id }}/generate_alternative" class="button button--warning">
-                <i class="ri-magic-line"></i> Generate Alternative
+              <a 
+                href="/podcast/episodes/{{ episode.id }}/generate_alternative" 
+                class="button button--warning"
+                aria-label="Generate alternative for episode {{ episode.title }}"
+              >
+                <i class="ri-magic-line" aria-hidden="true"></i> 
+                <span>Generate Alternative</span>
               </a>
-            </div>
+            </footer>
           </div>
         </article>
       {% endfor %}
-    </div>
-    
-    {% if not episodes %}
-    <div class="episodes__empty">
-      <div class="episodes__empty-icon">
-        <i class="ri-mic-line"></i>
+    {% else %}
+      <div class="episodes__empty" role="status" aria-live="polite">
+        <div class="episodes__empty-icon" aria-hidden="true">
+          <i class="ri-mic-line"></i>
+        </div>
+        <h2 class="episodes__empty-title">No Episodes Yet</h2>
+        <p class="episodes__empty-description">
+          Start creating amazing podcast episodes with AI-powered tools.
+        </p>
+        <a href="/podcast/episodes/create" class="button button--primary">
+          <i class="ri-add-circle-line" aria-hidden="true"></i> 
+          <span>Create Your First Episode</span>
+        </a>
       </div>
-      <h3 class="episodes__empty-title">No Episodes Yet</h3>
-      <p class="episodes__empty-description">
-        Start creating amazing podcast episodes with AI-powered tools.
-      </p>
-      <a href="/podcast/episodes/create" class="button button--primary">
-        <i class="ri-add-circle-line"></i> Create Your First Episode
-      </a>
-    </div>
     {% endif %}
+  </div>
 </section>
 
 <script>
-  async function deleteEpisode(id) {
-    if (!confirm('Are you sure you want to delete this episode? This action cannot be undone.')) return;
+  async function deleteEpisode(id, button) {
+    if (!confirm('Are you sure you want to delete this episode? This action cannot be undone.')) {
+      return;
+    }
 
-    const button = event.target;
     const originalText = button.innerHTML;
+    const originalDisabled = button.disabled;
     
     // Show loading state
-    button.innerHTML = '<i class="ri-loader-4-line"></i> Deleting...';
+    button.innerHTML = '<i class="ri-loader-4-line" aria-hidden="true"></i> <span>Deleting...</span>';
     button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
 
     try {
       const response = await fetch(`/podcast/episodes/${id}/delete`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {
         // Add fade out animation
         const episodeCard = button.closest('.episode__article');
-        episodeCard.style.transition = 'all 0.3s ease';
-        episodeCard.style.opacity = '0';
-        episodeCard.style.transform = 'translateY(-20px)';
-        
-        setTimeout(() => {
-          episodeCard.remove();
+        if (episodeCard) {
+          episodeCard.style.transition = 'all 0.3s ease';
+          episodeCard.style.opacity = '0';
+          episodeCard.style.transform = 'translateY(-20px)';
           
-          // Check if no episodes left
-          const remainingEpisodes = document.querySelectorAll('.episode__article');
-          if (remainingEpisodes.length === 0) {
-            window.location.reload();
-          }
-        }, 300);
+          setTimeout(() => {
+            episodeCard.remove();
+            
+            // Check if no episodes left
+            const remainingEpisodes = document.querySelectorAll('.episode__article');
+            if (remainingEpisodes.length === 0) {
+              window.location.reload();
+            }
+          }, 300);
+        }
       } else {
         throw new Error('Failed to delete episode');
       }
@@ -101,7 +126,8 @@
       
       // Restore button state
       button.innerHTML = originalText;
-      button.disabled = false;
+      button.disabled = originalDisabled;
+      button.removeAttribute('aria-busy');
     }
   }
 </script>

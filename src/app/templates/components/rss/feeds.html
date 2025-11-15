@@ -1,23 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section">
-  <h1 class="section__title-center">New Episodes</h1>
+<section class="section" aria-labelledby="feeds-heading">
+  <header class="section__header">
+    <h1 id="feeds-heading" class="section__title-center">New Episodes</h1>
+  </header>
     
-  <div class="episode__container container">
+  <div class="episode__container container" role="list" aria-label="RSS feed episodes">
+    {% if feeds %}
       {% for feed in feeds %}
-      <a href="/rss/feed/{{feed.uuid}}">
-          <div class="episode__card">
-            <div>
-              <img src="{{ feed.image_url }}" alt="{{ feed.title }}">
-              <h3 class="episode__name">{{ feed.title }}</h3>
-              <h3 class="episode__date">{{ feed.date }}</h3>
-              <span class="episode__description">{{ feed.description[:100] }}...</span>
+        <article class="episode__article" role="listitem">
+          <a href="/rss/feed/{{feed.uuid}}" class="episode__link" aria-label="View {{ feed.title }}">
+            <div class="episode__card">
+              <div class="episode__card-content">
+                {% if feed.image_url %}
+                <div class="episode__image-wrapper">
+                  <img 
+                    src="{{ feed.image_url }}" 
+                    alt="{{ feed.title }}" 
+                    class="episode__image"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+                {% endif %}
+                
+                <div class="episode__body">
+                  <h3 class="episode__name">{{ feed.title }}</h3>
+                  
+                  {% if feed.date %}
+                  <time class="episode__date" datetime="{{ feed.date }}">
+                    {{ feed.date }}
+                  </time>
+                  {% endif %}
+                  
+                  {% if feed.description %}
+                  <p class="episode__description">
+                    {% if feed.description|length > 100 %}
+                      {{ feed.description[:100] }}...
+                    {% else %}
+                      {{ feed.description }}
+                    {% endif %}
+                  </p>
+                  {% endif %}
+                </div>
+              </div>
+              
+              {% if feed.author %}
+              <footer class="episode__footer">
+                <span class="episode__author" aria-label="Author: {{ feed.author }}">
+                  <i class="ri-user-line" aria-hidden="true"></i>
+                  <span>{{ feed.author }}</span>
+                </span>
+              </footer>
+              {% endif %}
             </div>
-            <span class="episode__author">- {{ feed.author }}</span>
-          </div>
-        </a>
+          </a>
+        </article>
       {% endfor %}
-    </div>
+    {% else %}
+      <div class="episodes__empty" role="status" aria-live="polite">
+        <div class="episodes__empty-icon" aria-hidden="true">📰</div>
+        <h2 class="episodes__empty-title">No feeds available</h2>
+        <p class="episodes__empty-description">
+          {% if error %}
+            {{ error }}
+          {% else %}
+            There are no RSS feeds available at the moment. Please check back later.
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

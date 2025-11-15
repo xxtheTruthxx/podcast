@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section admin__section">
+  <div class="container">
+    <header class="admin__header">
+      <div>
+        <h1 class="admin__title">
+          <i class="ri-add-circle-line"></i>
+          Add New Episode
+        </h1>
+        <p class="admin__subtitle">Create a new podcast episode</p>
+      </div>
+      <a href="/admin/episodes" class="button button--secondary">
+        <i class="ri-arrow-left-line"></i>
+        Back to Episodes
+      </a>
+    </header>
+
+    {% if error %}
+    <div class="admin__error" role="alert">
+      <i class="ri-error-warning-line"></i>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <div class="admin__form-container">
+      <form method="POST" action="/admin/episodes/add" class="admin__form">
+        <div class="form__field">
+          <label for="title" class="form__label">
+            <i class="ri-heading"></i>
+            Episode Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="form__input"
+            required
+            placeholder="Enter episode title"
+            autofocus
+          >
+          <p class="form__help">A catchy title that describes your episode</p>
+        </div>
+
+        <div class="form__field">
+          <label for="description" class="form__label">
+            <i class="ri-file-text-line"></i>
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            class="form__textarea"
+            required
+            rows="6"
+            placeholder="Enter episode description"
+          ></textarea>
+          <p class="form__help">Detailed description of your episode content</p>
+        </div>
+
+        <div class="form__field">
+          <label for="host" class="form__label">
+            <i class="ri-user-line"></i>
+            Host Name
+          </label>
+          <input
+            type="text"
+            id="host"
+            name="host"
+            class="form__input"
+            required
+            placeholder="Enter host name"
+          >
+          <p class="form__help">Name of the podcast host</p>
+        </div>
+
+        <div class="form__actions">
+          <button type="submit" class="button button--primary button--large">
+            <i class="ri-save-line"></i>
+            Create Episode
+          </button>
+          <a href="/admin/episodes" class="button button--secondary">
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+.admin__section {
+  background: linear-gradient(135deg, var(--first-color-lighten) 0%, rgba(255, 255, 255, 0.8) 100%);
+  min-height: 100vh;
+}
+
+.admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin__title {
+  font-size: 2rem;
+  color: var(--title-color);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin__title i {
+  color: var(--first-color);
+}
+
+.admin__subtitle {
+  color: var(--text-color-light);
+  font-size: var(--normal-font-size);
+}
+
+.admin__error {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin__error i {
+  font-size: 1.25rem;
+}
+
+.admin__form-container {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.admin__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.form__actions .button {
+  flex: 1;
+  min-width: 150px;
+}
+
+@media screen and (max-width: 768px) {
+  .admin__form-container {
+    padding: 1.5rem;
+  }
+
+  .admin__header {
+    flex-direction: column;
+  }
+}
+</style>
+{% endblock %}
+

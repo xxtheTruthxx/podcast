@@ -7,6 +7,7 @@ from .routes import (
   podcast,
   podcast_api,
   rss,
+  rss_api,
   admin
 )
 
@@ -17,4 +18,5 @@ api_router = APIRouter()
 api_router.include_router(podcast.router, prefix="/podcast")
 api_router.include_router(podcast_api.router, prefix=f"{settings.API_V1_STR}/podcast")
 api_router.include_router(rss.router, prefix="/rss")
+api_router.include_router(rss_api.router, prefix=f"{settings.API_V1_STR}/rss")
 api_router.include_router(admin.router)

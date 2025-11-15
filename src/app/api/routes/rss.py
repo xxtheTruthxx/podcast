@@ -1,10 +1,12 @@
-from typing import List, Optional
+from typing import Annotated, List, Optional
 
 # Third-party Dependencies
 from fastapi import (
-    APIRouter,
-    status,
-    Request
+  APIRouter,
+  status,
+  Request,
+  Path,
+  Query
 )
 from fastapi.templating import Jinja2Templates
 from api.dependencies import AsyncSessionDep
@@ -24,7 +26,7 @@ router = APIRouter(tags=["RSS Feed"])
 @router.get("/feed/{uuid}")
 async def load_feed(
   request: Request,
-  uuid: str
+  uuid: Annotated[str, Path()]
 ):
   """
   Fetch feed from the RSS Feed.
@@ -45,8 +47,6 @@ async def load_feed(
             "feed": feed
           }       
         )
-    
-    # Feed not found
     return template.TemplateResponse(
       request=request,
       status_code=status.HTTP_404_NOT_FOUND,
@@ -65,7 +65,7 @@ async def load_feed(
 @router.get("/feed/{uuid}/add")
 async def add_feed(
     request: Request,
-    uuid: str,
+    uuid: Annotated[str, Path()],
     session: AsyncSessionDep
 ):
     """
@@ -83,7 +83,7 @@ async def add_feed(
                 await PodcastCRUD(session).create(episode)
                 return template.TemplateResponse(
                   request=request,
-                  status_code=status.HTTP_200_OK,
+                  status_code=status.HTTP_201_CREATED,
                   name="components/successful.html",
                   context={"title": "PodGen."}
                 )
@@ -109,7 +109,7 @@ async def add_feed(
     status_code=status.HTTP_200_OK)
 async def fetch_rss_feeds( 
     request: Request,
-    offset: int = 0,
+    offset: Annotated[int, Query()] = 0,
     limit: Optional[int] = None,
 ):
     """

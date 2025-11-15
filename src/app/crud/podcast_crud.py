@@ -1,10 +1,9 @@
 from sqlmodel import select
 
-# Local Dependencies
 from .base_crud import BaseCRUD
 from core.models.podcast import (
-    PodcastEpisodeBase,
-    PodcastEpisode
+  PodcastEpisodeBase,
+  PodcastEpisode
 )
 
 class PodcastCRUD(BaseCRUD):
@@ -42,9 +41,7 @@ class PodcastCRUD(BaseCRUD):
       """
       statement = select(PodcastEpisode).where(PodcastEpisode.id == id)
       result = await self.session.execute(statement)
-      instance = result.scalar_one_or_none()
-      if instance:
+      if (instance := result.scalar_one_or_none()):
         await self.session.delete(instance)
         await self.session.commit()
-      else:
-        return None
+      return instance

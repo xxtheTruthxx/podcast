@@ -4,6 +4,7 @@ from typing import Optional, Annotated, Literal
 from fastapi import (
     APIRouter,
     Request,
+    HTTPException,
     status,
     Form,
     Path,
@@ -40,14 +41,10 @@ async def get_episodes(
     """
     Get all episodes.
     """
-    episodes = await PodcastCRUD(session).read_all(
-        PodcastEpisode, 
-        offset=offset,
-        limit=limit
-    )
-    if not episodes:
+    if not (episodes := await PodcastCRUD(session).read_all(PodcastEpisode, offset=offset, limit=limit)):
       return template.TemplateResponse(
         request=request,
+        status_code=status.HTTP_404_NOT_FOUND,
         name="components/notFound.html",
         context={
           "title": settings.NAME
@@ -68,6 +65,7 @@ async def get_episodes(
 async def create_episode_form(request: Request):
     return template.TemplateResponse(
         request=request,
+        status_code=status.HTTP_201_CREATED,
         name="components/podcast/create_episode.html",
         context={
           "title": settings.NAME,
@@ -88,20 +86,35 @@ async def create_episode(
     """
     Create an episode.
     """
-    episode = PodcastEpisode(
-      title=title,
-      description=description,
-      host=host
-    )
     
-    await PodcastCRUD(session).create(episode)
+    await PodcastCRUD(session).create(
+      PodcastEpisode(
+        title=title,
+        description=description,
+        host=host
+      )
+    )
 
     return RedirectResponse(f"/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/episodes/{episode_id}/generate_alternative",
   response_class=HTMLResponse,
   name="create_alternative_form")
-async def create_alternative_form(request: Request, episode_id: int):
+async def create_alternative_form(
+  request: Request,
+  session: AsyncSessionDep,
+  episode_id: Annotated[int, Path()]
+):
+  if not await PodcastCRUD(session).read_by_id(episode_id):
+    return template.TemplateResponse(
+        request=request,
+        status_code=status.HTTP_404_NOT_FOUND,
+        name="components/notFound.html",
+        context={
+          "title": settings.NAME
+        }
+      )
+  
   return template.TemplateResponse(
     request=request,
     name="components/podcast/create_alternative_episode.html",
@@ -113,8 +126,7 @@ async def create_alternative_form(request: Request, episode_id: int):
   )
 
 @router.post("/episodes/{episode_id}/generate_alternative",
-  response_model=PodcastEpisodeAlternative,
-  status_code=status.HTTP_200_OK)
+  response_model=PodcastEpisodeAlternative)
 async def get_alternative_episode(
     request: Request,
     episode_id: Annotated[int, Path()],
@@ -125,17 +137,18 @@ async def get_alternative_episode(
     """
     Generate an alternative version of the episode.
     """
-    result = await PodcastCRUD(session).read_by_id(episode_id)
-    if not result:
+    if not (result := await PodcastCRUD(session).read_by_id(episode_id)):
       return template.TemplateResponse(
         request=request,
+        status_code=status.HTTP_404_NOT_FOUND,
         name="components/notFound.html",
         context={
           "title": settings.NAME
         }
       )
+    
     origional_episode = PodcastEpisodeBase.model_validate(result)
-
+    
     groq = GroqClient(
         model=settings.GROQ_MODEL,
     ).create_template(
@@ -153,6 +166,7 @@ async def get_alternative_episode(
     ):
       return template.TemplateResponse(
         request=request,
+        status_code=status.HTTP_404_NOT_FOUND,
         name="components/notFound.html",
         context={
           "title": settings.NAME
@@ -162,7 +176,6 @@ async def get_alternative_episode(
     return RedirectResponse(f"/podcast/episodes/all", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.delete("/episodes/{episode_id}/delete",
-  status_code=status.HTTP_200_OK,
   name="delete_episode")
 async def delete_episode(
   episode_id: Annotated[int, Path()],
@@ -171,9 +184,13 @@ async def delete_episode(
   """
   Deletes episode using `id`,
   """
+  if not await PodcastCRUD(session).remove_by_id(episode_id):
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Episode not found."
+      )
 
-  await PodcastCRUD(session).remove_by_id(episode_id)
-  
   return JSONResponse(
+    status_code=status.HTTP_200_OK,
     content={"message": "Episode has been removed successfully."}
   )

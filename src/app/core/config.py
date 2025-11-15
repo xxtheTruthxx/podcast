@@ -28,7 +28,10 @@ class Settings(BaseSettings):
     GROQ_MODEL: str
 
     RSS_URL: str
-    
+
+    ADMIN_USERNAME: str
+    ADMIN_PASSWORD: str
+
 settings = Settings()
 
 DB_URL = f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
